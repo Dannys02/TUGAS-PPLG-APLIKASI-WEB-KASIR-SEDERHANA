@@ -4,13 +4,16 @@
 <h1 class="header-title">Manajemen Kategori</h1>
 
 <div class="card">
-    <form action="{{ route('categories.store') }}" method="POST">
+    <form action="{{ isset($editCategory) ? route('categories.update', $editCategory->id) : route('categories.store') }}" method="POST">
         @csrf
+        @if(isset($editCategory))
+            @method('PUT')
+        @endif
         <div class="form-group">
             <label>Nama Kategori Baru</label>
-            <input type="text" name="nama_kategori" class="form-control" required placeholder="Contoh: Minuman Dingin">
+            <input type="text" name="nama_kategori" class="form-control" required placeholder="Contoh: Minuman Dingin" value="{{ old('nama_kategori', $editCategory->nama_kategori ?? '') }}">
         </div>
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Tambah Kategori</button>
+        <button type="submit" class="btn btn-primary">{{ isset($editCategory) ? 'Update Kategori' : '+ Tambah Kategori'}}</button>
     </form>
 </div>
 
@@ -30,6 +33,7 @@
                     <td>{{ $c->id }}</td>
                     <td>{{ $c->nama_kategori }}</td>
                     <td>
+                        <a href="{{ route('categories.edit', $c->id) }}" class="btn btn-warning btn-sm"><i class="fa-solid fa-edit"></i> Edit</a>
                         <form action="{{ route('categories.destroy', $c->id) }}" method="POST" onsubmit="return confirm('Hapus kategori ini?')">
                             @csrf
                             @method('DELETE')

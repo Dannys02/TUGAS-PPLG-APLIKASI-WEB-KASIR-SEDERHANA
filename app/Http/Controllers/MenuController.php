@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\Menu;
 
 class MenuController extends Controller
 {
     public function index()
     {
-        $menus = \App\Models\Menu::with('category')->get();
-        $categories = \App\Models\Category::all();
+        $menus = Menu::with('category')->get();
+        $categories = Category::all();
         return view('menus.index', compact('menus', 'categories'));
     }
 
@@ -22,11 +24,11 @@ class MenuController extends Controller
             'stok' => 'required|integer|min:0',
             'deskripsi' => 'nullable|string'
         ]);
-        \App\Models\Menu::create($request->all());
-        return redirect()->back()->with('success', 'Menu berhasil ditambahkan.');
+        Menu::create($request->all());
+        return redirect()->route('menus.index')->with('success', 'Menu berhasil ditambahkan.');
     }
 
-    public function update(\Illuminate\Http\Request $request, \App\Models\Menu $menu)
+    public function update(\Illuminate\Http\Request $request, Menu $menu)
     {
         $request->validate([
             'nama_menu' => 'required|string|max:255',
@@ -36,12 +38,20 @@ class MenuController extends Controller
             'deskripsi' => 'nullable|string'
         ]);
         $menu->update($request->all());
-        return redirect()->back()->with('success', 'Menu berhasil diubah.');
+        return redirect()->route('menus.index')->with('success', 'Menu berhasil diubah.');
     }
 
-    public function destroy(\App\Models\Menu $menu)
+    public function edit($id)
+    {
+        $menus = Menu::with('category')->get();
+        $categories = Category::all();
+        $editMenu = Menu::findOrFail($id);
+        return view('menus.index', compact('menus', 'categories', 'editMenu'));
+    }
+
+    public function destroy(Menu $menu)
     {
         $menu->delete();
-        return redirect()->back()->with('success', 'Menu berhasil dihapus.');
+        return redirect()->route('menus.index')->with('success', 'Menu berhasil dihapus.');
     }
 }

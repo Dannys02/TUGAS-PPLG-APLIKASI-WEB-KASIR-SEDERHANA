@@ -10,8 +10,8 @@ Route::get('/', function () {
     return redirect()->route('pos.index');
 });
 
-Route::resource('categories', CategoryController::class)->except(['create', 'show', 'edit']);
-Route::resource('menus', MenuController::class)->except(['create', 'show', 'edit']);
+Route::resource('categories', CategoryController::class);
+Route::resource('menus', MenuController::class);
 
 Route::get('/pos', [TransactionController::class, 'index'])->name('pos.index');
 Route::post('/pos', [TransactionController::class, 'store'])->name('pos.store');

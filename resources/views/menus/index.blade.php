@@ -4,32 +4,38 @@
 <h1 class="header-title">Manajemen Menu</h1>
 
 <div class="card">
-    <form action="{{ route('menus.store') }}" method="POST">
+    <form action="{{ isset($editMenu) ? route('menus.update', $editMenu->id) : route('menus.store') }}" method="POST">
         @csrf
+        @if(isset($editMenu))
+            @method('PUT')
+        @endif
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
             <div class="form-group">
                 <label>Nama Menu</label>
-                <input type="text" name="nama_menu" class="form-control" required placeholder="Contoh: Espresso">
+                <input type="text" name="nama_menu" class="form-control" required placeholder="Contoh: Espresso" value="{{ old('nama_menu', $editMenu->nama_menu ?? '') }}">
             </div>
             <div class="form-group">
                 <label>Kategori</label>
                 <select name="kategori_id" class="form-control" required>
                     <option value="">-- Pilih Kategori --</option>
                     @foreach($categories as $c)
-                        <option value="{{ $c->id }}">{{ $c->nama_kategori }}</option>
+                       <option value="{{ $c->id }}" 
+    {{ old('kategori_id', $editMenu->kategori_id ?? '') == $c->id ? 'selected' : '' }}>
+    {{ $c->nama_kategori }}
+</option>
                     @endforeach
                 </select>
             </div>
             <div class="form-group">
                 <label>Harga (Rp)</label>
-                <input type="number" name="harga" class="form-control" required min="0" placeholder="15000">
+                <input type="number" name="harga" class="form-control" required min="0" placeholder="15000" value="{{ old('harga', $editMenu->harga ?? '') }}">
             </div>
             <div class="form-group">
                 <label>Stok Awal</label>
-                <input type="number" name="stok" class="form-control" required min="0" placeholder="50">
+                <input type="number" name="stok" class="form-control" required min="0" placeholder="50" value="{{ old('stok', $editMenu->stok ?? '') }}">
             </div>
         </div>
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Tambah Menu</button>
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i>{{ isset($editMenu) ? 'Update Menu' : 'Tambah Menu'}}</button>
     </form>
 </div>
 
@@ -58,7 +64,8 @@
                             <span style="color: var(--danger); font-weight: bold;">{{ $m->stok }}</span>
                         @endif
                     </td>
-                    <td>
+                    <td class="d-flex gap-2">
+                        <a href="{{ route('menus.edit', $m->id) }}" class="btn btn-warning btn-sm"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
                         <form action="{{ route('menus.destroy', $m->id) }}" method="POST" onsubmit="return confirm('Hapus menu ini?')">
                             @csrf
                             @method('DELETE')
