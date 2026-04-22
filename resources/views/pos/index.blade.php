@@ -17,7 +17,7 @@
             @endif
         </div>
     </div>
-    
+
     <div class="cart-container">
         <h2 style="color: var(--primary-dark); border-bottom: 2px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 0;">Keranjang Pesanan</h2>
         <div class="cart-items" id="cart-items">
@@ -61,18 +61,18 @@
 
     function updateQty(id, delta) {
         if(!cart[id]) return;
-        
+
         cart[id].qty += delta;
-        
+
         if(cart[id].qty > cart[id].max) {
             cart[id].qty = cart[id].max;
             alert('Stok tidak mencukupi!');
         }
-        
+
         if(cart[id].qty <= 0) {
             delete cart[id];
         }
-        
+
         renderCart();
     }
 

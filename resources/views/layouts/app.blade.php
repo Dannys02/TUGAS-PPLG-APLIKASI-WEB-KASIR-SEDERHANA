@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kopi Senja - Aplikasi Kasir</title>
+    <title>Admin Kafe - Aplikasi Kasir</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -11,7 +11,7 @@
 
     <aside class="sidebar">
         <div class="brand">
-            <i class="fa-solid fa-mug-hot"></i> Kopi Senja
+            <i class="fa-solid fa-mug-hot"></i> Admin Kafe
         </div>
         <ul class="nav-links">
             <li><a href="{{ route('pos.index') }}" class="{{ request()->routeIs('pos.*') ? 'active' : '' }}"><i class="fa-solid fa-cash-register"></i> Kasir (POS)</a></li>
