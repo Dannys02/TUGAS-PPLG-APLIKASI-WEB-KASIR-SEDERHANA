@@ -19,10 +19,10 @@
                 <select name="kategori_id" class="form-control" required>
                     <option value="">-- Pilih Kategori --</option>
                     @foreach($categories as $c)
-                       <option value="{{ $c->id }}" 
-    {{ old('kategori_id', $editMenu->kategori_id ?? '') == $c->id ? 'selected' : '' }}>
-    {{ $c->nama_kategori }}
-</option>
+                       <option value="{{ $c->id }}"
+                            {{ old('kategori_id', $editMenu->kategori_id ?? '') == $c->id ? 'selected' : '' }}>
+                            {{ $c->nama_kategori }}
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -44,6 +44,7 @@
         <table>
             <thead>
                 <tr>
+                    <th>No</th>
                     <th>Menu</th>
                     <th>Kategori</th>
                     <th>Harga</th>
@@ -54,9 +55,10 @@
             <tbody>
                 @forelse($menus as $m)
                 <tr>
+                    <td>{{ $loop->iteration }}</td>
                     <td><strong>{{ $m->nama_menu }}</strong></td>
                     <td>{{ $m->category->nama_kategori ?? '-' }}</td>
-                    <td style="color: var(--accent-color); font-weight: bold;">Rp {{ number_format($m->harga, 0, ',', '.') }}</td>
+                    <td style="color: var(--primary-dark); font-weight: bold;">Rp {{ number_format($m->harga, 0, ',', '.') }}</td>
                     <td>
                         @if($m->stok > 10)
                             <span style="color: var(--success); font-weight: bold;">{{ $m->stok }}</span>
@@ -64,12 +66,12 @@
                             <span style="color: var(--danger); font-weight: bold;">{{ $m->stok }}</span>
                         @endif
                     </td>
-                    <td class="d-flex gap-2">
+                    <td style="display: flex; gap: 0.5rem; justify-content: flex-start;">
                         <a href="{{ route('menus.edit', $m->id) }}" class="btn btn-warning btn-sm"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-                        <form action="{{ route('menus.destroy', $m->id) }}" method="POST" onsubmit="return confirm('Hapus menu ini?')">
+                        <form action="{{ route('menus.destroy', $m->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i> Hapus</button>
+                            <button type="submit" onclick="return confirm('Hapus menu {{ $m->nama_menu }}?')" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i> Hapus</button>
                         </form>
                     </td>
                 </tr>

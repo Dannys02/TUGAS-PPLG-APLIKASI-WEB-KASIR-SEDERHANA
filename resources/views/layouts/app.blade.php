@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta rel="icon" href="{{ asset('Logo.png') }}" type="image/png">
     <title>Admin Kafe - Aplikasi Kasir</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,7 +12,7 @@
 
     <aside class="sidebar">
         <div class="brand">
-            <i class="fa-solid fa-mug-hot"></i> Admin Kafe
+            <img src="{{ asset('Logo.png') }}" style="height: 60px; width: 60px;" alt="Logo Admin Kafe"> Admin Kafe
         </div>
         <ul class="nav-links">
             <li><a href="{{ route('pos.index') }}" class="{{ request()->routeIs('pos.*') ? 'active' : '' }}"><i class="fa-solid fa-cash-register"></i> Kasir (POS)</a></li>

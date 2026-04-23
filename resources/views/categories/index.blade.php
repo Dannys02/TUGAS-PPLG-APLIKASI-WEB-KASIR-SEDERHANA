@@ -22,7 +22,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>No</th>
                     <th>Nama Kategori</th>
                     <th>Aksi</th>
                 </tr>
@@ -30,9 +30,9 @@
             <tbody>
                 @forelse($categories as $c)
                 <tr>
-                    <td>{{ $c->id }}</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $c->nama_kategori }}</td>
-                    <td>
+                    <td style="display: flex; gap: 0.5rem; justify-content: flex-start;">
                         <a href="{{ route('categories.edit', $c->id) }}" class="btn btn-warning btn-sm"><i class="fa-solid fa-edit"></i> Edit</a>
                         <form action="{{ route('categories.destroy', $c->id) }}" method="POST" onsubmit="return confirm('Hapus kategori ini?')">
                             @csrf
