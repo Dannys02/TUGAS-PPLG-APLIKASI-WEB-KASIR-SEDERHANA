@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Menu;
 use App\Models\Transaction;
 use App\Models\DetailTransaction;
+use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
     public function index()
     {
-        $menus = Menu::where('stok', '>', 0)->get();
+        $menus = Menu::with('category')->where('stok', '>', 0)->get();
         return view('pos.index', compact('menus'));
     }
 
@@ -25,7 +26,7 @@ class TransactionController extends Controller
         ]);
 
         try {
-            \Illuminate\Support\Facades\DB::transaction(function () use ($request) {
+            DB::transaction(function () use ($request) {
                 $total = 0;
                 $kode = 'TRX-' . date('YmdHis') . '-' . rand(100, 999);
 
@@ -67,5 +68,12 @@ class TransactionController extends Controller
     {
         $transactions = Transaction::orderBy('created_at', 'desc')->get();
         return view('transactions.index', compact('transactions'));
+    }
+
+    public function destroy($id) {  
+        $transaction = Transaction::findOrFail($id);
+        $transaction->delete();
+
+        return redirect()->back()->with('success', 'Hapus transaksi berhasil');
     }
 }

@@ -1,53 +1,70 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Kasir Cafe - Sistem Point of Sale (POS) untuk Kafe
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 📋 Presentasi Aplikasi
 
-## About Laravel
+**Kasir Cafe** adalah aplikasi web berbasis Laravel yang dirancang khusus sebagai sistem Point of Sale (POS) modern untuk mengelola operasional kafe dengan efisien. Aplikasi ini menyediakan solusi terintegrasi untuk mengelola menu, kategori produk, melakukan transaksi penjualan, dan mencatat riwayat transaksi secara real-time. Dengan antarmuka yang user-friendly dan responsif, Kasir Cafe memudahkan kasir dan pemilik kafe dalam melakukan penjualan, manajemen inventaris menu, serta analisis penjualan harian. Aplikasi ini dibangun dengan teknologi Laravel framework terkini yang memastikan keamanan data, performa optimal, dan skalabilitas untuk pertumbuhan bisnis kafe ke depannya.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🎯 Fungsi dan Fitur Utama
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. **Manajemen Kategori Menu**
+Fitur ini memungkinkan pemilik atau admin kafe untuk mengelola kategori-kategori produk menu dengan mudah. Pengguna dapat membuat kategori baru seperti "Minuman Panas", "Minuman Dingin", "Makanan Berat", "Makanan Ringan", dan lainnya. Dengan fitur ini, menu dapat diorganisir secara terstruktur sehingga memudahkan kasir saat memilih produk pada saat transaksi. Admin dapat melihat daftar semua kategori, menambah kategori baru, mengedit informasi kategori, dan menghapus kategori yang sudah tidak diperlukan. Sistem kategori ini membantu dalam pengorganisasian produk dan membuat sistem penjualan lebih efisien.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 2. **Manajemen Menu dan Produk**
+Modul manajemen menu memungkinkan admin untuk mengelola seluruh daftar produk yang dijual di kafe. Setiap menu dapat dikaitkan dengan kategori tertentu dan memiliki informasi lengkap seperti nama produk, deskripsi, harga, stok ketersediaan, dan gambar produk. Admin dapat dengan mudah menambahkan menu baru ke sistem, mengedit detail produk seperti harga dan stok, serta menghapus menu yang tidak lagi tersedia. Fitur pencarian dan filter berdasarkan kategori juga tersedia untuk memudahkan admin dalam mengelola ratusan item menu sekaligus. Sistem ini memastikan data menu selalu update dan akurat untuk keperluan transaksi.
 
-## Learning Laravel
+### 3. **Sistem Point of Sale (POS)**
+Fitur utama aplikasi ini adalah sistem POS yang memungkinkan kasir untuk melakukan penjualan dengan cepat dan akurat. Interface POS dirancang untuk workflow yang optimal, di mana kasir dapat memilih produk dari kategori, menambahkan ke keranjang, mengatur jumlah item, dan menghitung total harga secara otomatis. Sistem ini mendukung penjualan multiple items dalam satu transaksi, perhitungan pajak, diskon, dan kembalian. Setiap transaksi dicatat secara otomatis dengan timestamp, informasi detail produk, jumlah, harga, dan total pembayaran. Antarmuka POS dilengkapi dengan fitur pencarian cepat untuk menemukan produk dengan mudah di tengah volume menu yang besar.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 4. **Riwayat Transaksi dan Laporan**
+Fitur riwayat transaksi memberikan pelaporan lengkap terhadap semua penjualan yang telah dilakukan. Admin dan kasir dapat melihat detail transaksi meliputi waktu penjualan, daftar produk yang terjual, jumlah item, harga satuan, jumlah pembayaran, dan detail kembalian. Laporan ini dapat disaring berdasarkan tanggal, kategori produk, atau periode tertentu untuk analisis penjualan lebih lanjut. Dengan data historis yang lengkap, pemilik kafe dapat membuat keputusan bisnis berdasarkan tren penjualan, produk bestseller, dan pendapatan harian atau bulanan.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 5. **Manajemen User dan Autentikasi**
+Sistem autentikasi keamanan terintegrasi memastikan hanya pengguna yang sah yang dapat mengakses aplikasi. Aplikasi mendukung berbagai level pengguna seperti Admin (akses penuh), Kasir (akses untuk POS dan riwayat), dan Manajer (akses untuk laporan). Setiap pengguna memiliki kredensial (username/email dan password) yang aman dan terenkripsi. Sistem ini juga mencatat aktivitas pengguna untuk audit trail dan keamanan data nasabah.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## 🛠️ Stack Teknologi
 
-## Agentic Development
+- **Backend**: Laravel 11 - PHP Framework modern
+- **Database**: MySQL/MariaDB 
+- **Frontend**: Blade Template Engine dengan HTML, CSS, dan JavaScript
+- **Build Tool**: Vite untuk asset bundling
+- **ORM**: Eloquent untuk interaksi database
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## 📁 Struktur Folder Proyek
 
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```
+Kasir Cafe/
+├── app/
+│   ├── Http/Controllers/       # Controller untuk handling logic aplikasi
+│   ├── Models/                 # Model data (Category, Menu, Transaction, dll)
+│   └── Providers/              # Service providers
+├── database/
+│   ├── migrations/             # Migrasi database untuk struktur tabel
+│   ├── factories/              # Factory untuk testing
+│   └── seeders/                # Database seeder
+├── resources/views/            # Template Blade untuk UI
+│   ├── categories/             # View untuk manajemen kategori
+│   ├── menus/                  # View untuk manajemen menu
+│   ├── pos/                    # View untuk sistem POS
+│   ├── transactions/           # View untuk riwayat transaksi
+│   └── layouts/                # Layout template
+├── routes/                     # Route definition (web.php)
+├── config/                     # Konfigurasi aplikasi
+└── public/                     # Asset publik (CSS, gambar, dll)
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## 🚀 Keunggulan Kasir Cafe
 
-## Contributing
+1. **Cepat dan Responsif** - Interface POS yang dioptimalkan untuk kecepatan transaksi maksimal
+2. **User-Friendly** - Desain intuitif sehingga mudah digunakan oleh kasir dengan minimal training
+3. **Akurat** - Sistem perhitungan otomatis mengurangi kesalahan manual
+4. **Terukur** - Laporan detail membantu analisis bisnis dan pengambilan keputusan
+5. **Terintegrasi** - Semua fungsi terintegrasi dalam satu sistem yang kohesif
+6. **Aman** - Autentikasi dan enkripsi data untuk melindungi informasi bisnis
+7. **Scalable** - Dibangun dengan Laravel yang robust untuk pertumbuhan bisnis
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 📝 Catatan Implementasi
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Aplikasi Kasir Cafe telah dioptimalkan untuk memenuhi kebutuhan operasional kafe modern, dari kafe kecil hingga medium-sized dengan multiple outlets di masa depan. Sistem ini dapat dengan mudah dikembangkan untuk fitur tambahan seperti integrasi payment gateway, multiple outlet management, inventory tracking real-time, dan business analytics dashboard yang lebih canggih.
 
 ## Security Vulnerabilities
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Menu;
+use Illuminate\Validation\Rule;
 
 class MenuController extends Controller
 {
@@ -18,7 +19,14 @@ class MenuController extends Controller
     public function store(\Illuminate\Http\Request $request)
     {
         $request->validate([
-            'nama_menu' => 'required|string|max:255',
+            'nama_menu' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('menus')->where(function ($query) use ($request) {
+                    return $query->where('kategori_id', $request->kategori_id);
+                }),
+            ],
             'kategori_id' => 'required|exists:categories,id',
             'harga' => 'required|integer|min:0',
             'stok' => 'required|integer|min:0',

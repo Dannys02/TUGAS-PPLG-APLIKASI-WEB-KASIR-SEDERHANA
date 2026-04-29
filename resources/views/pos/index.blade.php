@@ -9,7 +9,10 @@
             <div class="menu-card" onclick="addToCart({{ $m->id }}, '{{ addslashes($m->nama_menu) }}', {{ $m->harga }}, {{ $m->stok }})">
                 <h3>{{ $m->nama_menu }}</h3>
                 <div class="menu-price">Rp {{ number_format($m->harga, 0, ',', '.') }}</div>
-                <div class="menu-stock"><i class="fa-solid fa-box"></i> Stok: {{ $m->stok }}</div>
+                <div class="flex items-center justify-between">
+                    <div class="menu-stock"> Kategori: {{ $m->category->nama_kategori }}</div>
+                    <div class="menu-stock"><i class="fa-solid fa-box"></i> Stok: {{ $m->stok }}</div>
+                </div>
             </div>
             @endforeach
             @if($menus->isEmpty())

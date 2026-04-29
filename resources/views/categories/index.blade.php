@@ -13,7 +13,13 @@
             <label>Nama Kategori Baru</label>
             <input type="text" name="nama_kategori" class="form-control" required placeholder="Contoh: Minuman Dingin" value="{{ old('nama_kategori', $editCategory->nama_kategori ?? '') }}">
         </div>
-        <button type="submit" class="btn btn-primary">{{ isset($editCategory) ? 'Update Kategori' : '+ Tambah Kategori'}}</button>
+        @error('nama_kategori')
+        <span class="text-red-600">{{ $message }}</span><br class="mb-4">
+        @enderror
+        <button type="submit" class="btn btn-primary {{ $errors->has('nama_kategori') ? 'mt-4' : '' }}">{{ isset($editCategory) ? 'Update Kategori' : '+ Tambah Kategori'}}</button>
+        @if (isset($editCategory))
+            <a href="{{ route('categories.index') }}" class="btn btn-secondary">Batal</a>
+        @endif
     </form>
 </div>
 

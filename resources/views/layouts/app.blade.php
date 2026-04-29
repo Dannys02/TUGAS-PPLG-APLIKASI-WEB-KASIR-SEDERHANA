@@ -7,6 +7,7 @@
     <title>Admin Kafe | Aplikasi Kasir</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 
@@ -33,5 +34,11 @@
     </main>
 
     @stack('scripts')
+
+    <script>
+        setTimeOut(() => {
+            document.getElementById('alert').display = 'none';
+        }, 5000);
+    </script>
 </body>
 </html>

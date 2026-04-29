@@ -216,7 +216,7 @@ tr:hover {
 .menu-card {
     background-color: var(--card-bg);
     border-radius: var(--radius);
-    padding: 1.5rem;
+    padding: 12px;
     box-shadow: var(--shadow-sm);
     text-align: center;
     border: 2px solid transparent;

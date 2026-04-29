@@ -35,7 +35,15 @@
                 <input type="number" name="stok" class="form-control" required min="0" placeholder="50" value="{{ old('stok', $editMenu->stok ?? '') }}">
             </div>
         </div>
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i>{{ isset($editMenu) ? 'Update Menu' : 'Tambah Menu'}}</button>
+
+        @error('nama_menu')
+        <span class="text-red-600">{{ $message }}</span><br class="mb-4">
+        @enderror
+
+        <button type="submit" class="btn btn-primary {{ $errors ? 'mt-4' : ''}}"><i class="fa-solid fa-plus"></i>{{ isset($editMenu) ? 'Update Menu' : 'Tambah Menu'}}</button>
+        @if (isset($editMenu))
+            <a href="{{ route('menus.index') }}" class="btn btn-secondary">Batal</a>
+        @endif
     </form>
 </div>
 

@@ -16,7 +16,7 @@ class CategoryController extends Controller
 
     public function store(\Illuminate\Http\Request $request)
     {
-        $request->validate(['nama_kategori' => 'required|string|max:255']);
+        $request->validate(['nama_kategori' => 'required|string|max:255|unique:categories,nama_kategori']);
         Category::create($request->all());
         return redirect()->back()->with('success', 'Kategori berhasil ditambahkan.');
     }

@@ -12,6 +12,7 @@
                     <th>Kode Transaksi</th>
                     <th>Total</th>
                     <th>Detail Item</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,10 +28,17 @@
                             @endforeach
                         </ul>
                     </td>
+                    <td>
+                        <form action="{{ route('pos.destroy', $t->id)}}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="return confirm('Hapus transaksi ini')" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i> Hapus</button>
+                        </form>
+                    </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4" style="text-align: center;">Belum ada transaksi yang tercatat.</td>
+                    <td colspan="5" style="text-align: center;">Belum ada transaksi yang tercatat.</td>
                 </tr>
                 @endforelse
             </tbody>
