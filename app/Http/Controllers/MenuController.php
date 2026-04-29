@@ -16,7 +16,7 @@ class MenuController extends Controller
         return view('menus.index', compact('menus', 'categories'));
     }
 
-    public function store(\Illuminate\Http\Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'nama_menu' => [
@@ -36,7 +36,7 @@ class MenuController extends Controller
         return redirect()->route('menus.index')->with('success', 'Menu berhasil ditambahkan.');
     }
 
-    public function update(\Illuminate\Http\Request $request, Menu $menu)
+    public function update(Request $request, Menu $menu)
     {
         $request->validate([
             'nama_menu' => 'required|string|max:255',

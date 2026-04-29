@@ -30,6 +30,12 @@
             </div>
         @endif
 
+        @if(session('error'))
+            <div class="alert bg-red-600">
+                <i class="fa-solid fa-triangle-exclamation"></i> {{ session('error') }}
+            </div>
+        @endif
+
         @yield('content')
     </main>
 

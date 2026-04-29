@@ -14,14 +14,15 @@ class CategoryController extends Controller
         return view('categories.index', compact('categories', 'editCategory'));
     }
 
-    public function store(\Illuminate\Http\Request $request)
+    public function store(Request $request)
     {
         $request->validate(['nama_kategori' => 'required|string|max:255|unique:categories,nama_kategori']);
         Category::create($request->all());
+
         return redirect()->back()->with('success', 'Kategori berhasil ditambahkan.');
     }
 
-    public function update(\Illuminate\Http\Request $request, Category $category)
+    public function update(Request $request, Category $category)
     {
         $request->validate(['nama_kategori' => 'required|string|max:255']);
         $category->update($request->all());
@@ -37,7 +38,14 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        $category->delete();
-        return redirect()->back()->with('success', 'Kategori berhasil dihapus.');
+        try {
+            $category->delete();
+            return back()->with('success', 'Kategori berhasil dihapus');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Kategori masih digunakan oleh menu!');
+        }
+
+        // $category->delete();
+        // return redirect()->back()->with('success', 'Kategori berhasil dihapus.');
     }
 }

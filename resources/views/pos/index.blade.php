@@ -6,7 +6,7 @@
         <h1 class="header-title">Kasir (Point of Sale)</h1>
         <div class="menu-grid">
             @foreach($menus as $m)
-            <div class="menu-card" onclick="addToCart({{ $m->id }}, '{{ addslashes($m->nama_menu) }}', {{ $m->harga }}, {{ $m->stok }})">
+            <div class="menu-card" onclick="addToCart({{ $m->id }}, '{{ addslashes($m->nama_menu) }}', {{ $m->harga }}, {{ $m->stok }}, '{{ addslashes($m->category->nama_kategori) }}')">
                 <h3>{{ $m->nama_menu }}</h3>
                 <div class="menu-price">Rp {{ number_format($m->harga, 0, ',', '.') }}</div>
                 <div class="flex items-center justify-between">
@@ -45,7 +45,7 @@
         return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
     }
 
-    function addToCart(id, name, price, stock) {
+    function addToCart(id, name, price, stock, category) {
         if(cart[id]) {
             if(cart[id].qty < stock) {
                 cart[id].qty++;
@@ -54,7 +54,7 @@
             }
         } else {
             if(stock > 0) {
-                cart[id] = { id: id, name: name, price: price, qty: 1, max: stock };
+                cart[id] = { id: id, name: name, price: price, qty: 1, max: stock, category: category };
             } else {
                 alert('Stok habis!');
             }
@@ -97,7 +97,7 @@
             container.innerHTML += `
                 <div class="cart-item">
                     <div class="cart-item-info">
-                        <h4>${item.name}</h4>
+                        <h4>${item.name} (${item.category})</h4>
                         <div class="cart-item-price">${formatRupiah(item.price)}</div>
                     </div>
                     <div class="qty-controls">

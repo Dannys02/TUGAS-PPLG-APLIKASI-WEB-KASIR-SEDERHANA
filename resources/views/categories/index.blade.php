@@ -40,7 +40,7 @@
                     <td>{{ $c->nama_kategori }}</td>
                     <td style="display: flex; gap: 0.5rem; justify-content: flex-start;">
                         <a href="{{ route('categories.edit', $c->id) }}" class="btn btn-warning btn-sm"><i class="fa-solid fa-edit"></i> Edit</a>
-                        <form action="{{ route('categories.destroy', $c->id) }}" method="POST" onsubmit="return confirm('Hapus kategori ini?')">
+                        <form action="{{ route('categories.destroy', $c->id) }}" method="POST" onsubmit="return confirm('Yakin hapus kategori {{ $c->nama_kategori }}? Semua menu dalam kategori ini juga akan terhapus.')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i> Hapus</button>
