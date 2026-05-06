@@ -11,7 +11,7 @@ class MenuController extends Controller
 {
     public function index()
     {
-        $menus = Menu::with('category')->get();
+        $menus = Menu::with('category')->paginate(5);
         $categories = Category::all();
         return view('menus.index', compact('menus', 'categories'));
     }
@@ -51,7 +51,7 @@ class MenuController extends Controller
 
     public function edit($id)
     {
-        $menus = Menu::with('category')->get();
+        $menus = Menu::with('category')->paginate(5);
         $categories = Category::all();
         $editMenu = Menu::findOrFail($id);
         return view('menus.index', compact('menus', 'categories', 'editMenu'));
