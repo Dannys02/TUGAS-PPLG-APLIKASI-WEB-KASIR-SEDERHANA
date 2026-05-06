@@ -51,6 +51,18 @@
         </form>
     </div>
 
+    <div class="rounded-lg mb-6">
+        <form method="GET" action="{{ route('menus.index') }}" class="flex flex-col md:flex-row gap-3">
+            <div class="w-full">
+                <input type="search" name="search" placeholder="Cari nama menu..." value="{{ request('search') }}"
+                    class="w-full p-4 rounded-lg">
+            </div>
+            <button type="submit" class="btm btn-primary text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                <i class="fas fa-search"></i> Cari
+            </button>
+        </form>
+    </div>
+
     <div class="card">
         <div class="table-container">
             <table>

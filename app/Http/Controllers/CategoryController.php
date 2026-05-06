@@ -7,9 +7,18 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::paginate(5);
+        $query = Category::query();
+
+        // search
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where('nama_kategori', 'like', "%{$search}%");
+        }
+
+        $categories = $query->paginate(5);
+
         $editCategory = null;
         return view('categories.index', compact('categories', 'editCategory'));
     }

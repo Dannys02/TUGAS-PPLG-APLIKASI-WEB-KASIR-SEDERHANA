@@ -9,10 +9,19 @@ use Illuminate\Validation\Rule;
 
 class MenuController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $menus = Menu::with('category')->paginate(5);
+        $query = Menu::query();
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where('nama_menu', 'like', "%{$search}%");
+        }
+
+        $menus = $query->paginate(5);
+
         $categories = Category::all();
+        
         return view('menus.index', compact('menus', 'categories'));
     }
 
