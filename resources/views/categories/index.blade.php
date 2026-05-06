@@ -70,7 +70,7 @@
                             <td colspan="3" style="text-align: center;">Belum ada kategori.</td>
                         </tr>
                     @endforelse
-                    <div style="margin-top: 1rem;">
+                    <div style="margin-top: 1rem; margin-bottom: 1rem;">
                         {{ $categories->links() }}
                     </div>
                 </tbody>

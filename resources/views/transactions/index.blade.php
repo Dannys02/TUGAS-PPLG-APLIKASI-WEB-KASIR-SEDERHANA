@@ -3,6 +3,57 @@
 @section('content')
     <h1 class="header-title">Riwayat Transaksi</h1>
 
+    <!-- Statistics Cards -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+        <!-- Card 1: Total Omzet -->
+        <div class="menu-card">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <p class="text-left" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem;">Total Omzet</p>
+                    <h2 style="color: var(--primary-dark); font-size: 1.8rem; font-weight: 700; margin: 0;">
+                        Rp {{ number_format($totalOmzet, 0, ',', '.') }}
+                    </h2>
+                </div>
+                <div style="font-size: 2.5rem; color: var(--accent-color);">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: Produk Paling Laris -->
+        <div class="menu-card">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem;">Produk Paling Laris</p>
+                    <h2 class="text-left" style="color: var(--primary-dark); font-size: 1.3rem; font-weight: 700; margin: 0;">
+                        {{ $bestSeller ? $bestSeller->menu->nama_menu : 'Belum ada' }}
+                    </h2>
+                    @if ($bestSeller)
+                        <p class="text-left" style="color: var(--accent-color); font-size: 0.9rem; margin-top: 0.3rem;">{{ $bestSeller->total_sold }} terjual</p>
+                    @endif
+                </div>
+                <div style="font-size: 2.5rem; color: var(--success);">
+                    <i class="fa-solid fa-fire"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: Total Produk Terjual -->
+        <div class="menu-card">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem;">Total Produk Terjual</p>
+                    <h2 style="color: var(--primary-dark); font-size: 1.8rem; font-weight: 700; margin: 0;">
+                        {{ $totalProductsSold ?? 0 }} produk
+                    </h2>
+                </div>
+                <div style="font-size: 2.5rem; color: var(--warning);">
+                    <i class="fa-solid fa-box"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="card">
         <div class="table-container">
             <table>

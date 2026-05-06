@@ -107,7 +107,7 @@
                             <td colspan="5" style="text-align: center;">Belum ada menu.</td>
                         </tr>
                     @endforelse
-                    <div style="margin-top: 1rem;">
+                    <div style="margin-top: 1rem; margin-bottom: 1rem;">
                         {{ $menus->links() }}
                     </div>
                 </tbody>

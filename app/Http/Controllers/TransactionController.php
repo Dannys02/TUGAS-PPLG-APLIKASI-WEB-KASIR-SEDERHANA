@@ -67,10 +67,20 @@ class TransactionController extends Controller
     public function history()
     {
         $transactions = Transaction::orderBy('created_at', 'desc')->get();
-        return view('transactions.index', compact('transactions'));
+
+        $totalOmzet = Transaction::sum('total');
+
+        $bestSeller = DetailTransaction::selectRaw('menu_id, SUM(jumlah) as total_sold')
+            ->groupBy('menu_id')
+            ->orderByDesc('total_sold')
+            ->first();
+
+        $totalProductsSold = DetailTransaction::sum('jumlah');
+
+        return view('transactions.index', compact('transactions', 'totalOmzet', 'bestSeller', 'totalProductsSold'));
     }
 
-    public function destroy($id) {  
+    public function destroy($id) {
         $transaction = Transaction::findOrFail($id);
         $transaction->delete();
 
