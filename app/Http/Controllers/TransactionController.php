@@ -7,6 +7,8 @@ use App\Models\Menu;
 use App\Models\Transaction;
 use App\Models\DetailTransaction;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class TransactionController extends Controller
 {
@@ -49,7 +51,7 @@ class TransactionController extends Controller
                     ]);
 
                     $menu = Menu::find($item['id']);
-                    if($menu->stok < $item['qty']) {
+                    if ($menu->stok < $item['qty']) {
                         throw new \Exception('Stok menu ' . $menu->nama_menu . ' tidak cukup.');
                     }
                     $menu->decrement('stok', $item['qty']);
@@ -80,7 +82,34 @@ class TransactionController extends Controller
         return view('transactions.index', compact('transactions', 'totalOmzet', 'bestSeller', 'totalProductsSold'));
     }
 
-    public function destroy($id) {
+    public function print()
+    {
+        $transactions = Transaction::latest()->get();
+
+        $totalOmzet = Transaction::sum('total');
+
+        $bestSeller = DetailTransaction::selectRaw('menu_id, SUM(jumlah) as total_sold')
+            ->groupBy('menu_id')
+            ->orderByDesc('total_sold')
+            ->first();
+
+        $totalProductsSold = DetailTransaction::sum('jumlah');
+
+        $date = Carbon::now()->format('d_m_Y');
+        $fileName = "laporan_keuangan_{$date}.pdf";
+
+        $pdf = Pdf::loadView('transactions.print', compact(
+            'transactions',
+            'totalOmzet',
+            'bestSeller',
+            'totalProductsSold'
+        ));
+
+        return $pdf->download($fileName);
+    }
+
+    public function destroy($id)
+    {
         $transaction = Transaction::findOrFail($id);
         $transaction->delete();
 

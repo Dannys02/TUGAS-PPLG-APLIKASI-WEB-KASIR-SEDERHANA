@@ -1,15 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="header-title">Riwayat Transaksi</h1>
+    <div class="flex justify-between items-center">
+        <h1 class="header-title">Riwayat Transaksi</h1>
+        <a href="{{ route('transactions.print') }}" class="btn btn-primary">
+            Print PDF
+        </a>
+    </div>
 
     <!-- Statistics Cards -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+    <div
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
         <!-- Card 1: Total Omzet -->
         <div class="menu-card">
             <div style="display: flex; align-items: center; justify-content: space-between;">
                 <div>
-                    <p class="text-left" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem;">Total Omzet</p>
+                    <p class="text-left" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem;">Total
+                        Omzet</p>
                     <h2 style="color: var(--primary-dark); font-size: 1.8rem; font-weight: 700; margin: 0;">
                         Rp {{ number_format($totalOmzet, 0, ',', '.') }}
                     </h2>
@@ -25,11 +32,13 @@
             <div style="display: flex; align-items: center; justify-content: space-between;">
                 <div>
                     <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem;">Produk Paling Laris</p>
-                    <h2 class="text-left" style="color: var(--primary-dark); font-size: 1.3rem; font-weight: 700; margin: 0;">
+                    <h2 class="text-left"
+                        style="color: var(--primary-dark); font-size: 1.3rem; font-weight: 700; margin: 0;">
                         {{ $bestSeller ? $bestSeller->menu->nama_menu : 'Belum ada' }}
                     </h2>
                     @if ($bestSeller)
-                        <p class="text-left" style="color: var(--accent-color); font-size: 0.9rem; margin-top: 0.3rem;">{{ $bestSeller->total_sold }} terjual</p>
+                        <p class="text-left" style="color: var(--accent-color); font-size: 0.9rem; margin-top: 0.3rem;">
+                            {{ $bestSeller->total_sold }} terjual</p>
                     @endif
                 </div>
                 <div style="font-size: 2.5rem; color: var(--success);">
@@ -76,7 +85,9 @@
                             <td>
                                 <ul style="padding-left: 1.2rem; color: var(--text-muted); font-size: 0.9rem; margin: 0;">
                                     @foreach ($t->details as $detail)
-                                        <li>{{ $detail->menu->nama_menu ?? 'Menu Terhapus' }} ({{ $detail->menu->category->nama_kategori ?? '' }}) {{ $detail->jumlah }}x</li>
+                                        <li>{{ $detail->menu->nama_menu ?? 'Menu Terhapus' }}
+                                            ({{ $detail->menu->category->nama_kategori ?? '' }})
+                                            {{ $detail->jumlah }}x</li>
                                     @endforeach
                                 </ul>
                             </td>
