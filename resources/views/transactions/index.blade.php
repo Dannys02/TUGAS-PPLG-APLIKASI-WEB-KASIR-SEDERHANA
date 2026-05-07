@@ -8,7 +8,7 @@
         </a>
     </div>
 
-    <!-- Statistics Cards -->
+    <!-- Cards -->
     <div
         style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
         <!-- Card 1: Total Omzet -->
@@ -31,11 +31,15 @@
         <div class="menu-card">
             <div style="display: flex; align-items: center; justify-content: space-between;">
                 <div>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem;">Produk Paling Laris</p>
-                    <h2 class="text-left"
-                        style="color: var(--primary-dark); font-size: 1.3rem; font-weight: 700; margin: 0;">
-                        {{ $bestSeller ? $bestSeller->menu->nama_menu : 'Belum ada' }}
-                    </h2>
+                    <p class="text-left" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem;">Produk Paling Laris</p>
+
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-left"
+                            style="color: var(--primary-dark); font-size: 1.3rem; font-weight: 700; margin: 0;">
+                            {{ $bestSeller ? $bestSeller->menu->nama_menu : 'Belum ada' }}
+                        </h2>
+                        <p>({{ $bestSeller ? $bestSeller->menu->category->nama_kategori : '' }})</p>
+                    </div>
                     @if ($bestSeller)
                         <p class="text-left" style="color: var(--accent-color); font-size: 0.9rem; margin-top: 0.3rem;">
                             {{ $bestSeller->total_sold }} terjual</p>
@@ -72,7 +76,7 @@
                         <th>Kode Transaksi</th>
                         <th>Total</th>
                         <th>Detail Item</th>
-                        <th>Aksi</th>
+                        {{-- <th>Aksi</th> --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -91,14 +95,14 @@
                                     @endforeach
                                 </ul>
                             </td>
-                            <td>
+                            {{-- <td>
                                 <form action="{{ route('pos.destroy', $t->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" onclick="return confirm('Hapus transaksi ini')"
                                         class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i> Hapus</button>
                                 </form>
-                            </td>
+                            </td> --}}
                         </tr>
                     @empty
                         <tr>

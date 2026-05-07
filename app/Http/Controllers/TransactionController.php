@@ -68,7 +68,12 @@ class TransactionController extends Controller
 
     public function history()
     {
-        $transactions = Transaction::orderBy('created_at', 'desc')->get();
+        $now = Carbon::now();
+        // $transactions = Transaction::orderBy('created_at', 'desc')->get();
+        $transactions = Transaction::whereMonth('created_at', $now->month)
+        ->whereYear('created_at', $now->year)
+        ->orderBy('created_at', 'desc')
+        ->get();
 
         $totalOmzet = Transaction::sum('total');
 
