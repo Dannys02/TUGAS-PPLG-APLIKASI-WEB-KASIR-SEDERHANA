@@ -25,13 +25,13 @@
 
     <main class="main-content">
         @if(session('success'))
-            <div class="alert">
+            <div class="alert-success bg-green-600">
                 <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
             </div>
         @endif
 
         @if(session('error'))
-            <div class="alert bg-red-600">
+            <div class="alert-error bg-red-600">
                 <i class="fa-solid fa-triangle-exclamation"></i> {{ session('error') }}
             </div>
         @endif
@@ -43,7 +43,8 @@
 
     <script>
         setTimeOut(() => {
-            document.getElementById('alert').display = 'none';
+            document.getElementById('alert-success').display = 'none';
+            document.getElementById('alert-error').display = 'none';
         }, 5000);
     </script>
 </body>
