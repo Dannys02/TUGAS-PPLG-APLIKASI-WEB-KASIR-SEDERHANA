@@ -335,6 +335,5 @@ tr:hover {
     padding: 1rem;
     border-radius: var(--radius);
     margin-bottom: 1.5rem;
-    background-color: var(--success);
     color: white;
 }
