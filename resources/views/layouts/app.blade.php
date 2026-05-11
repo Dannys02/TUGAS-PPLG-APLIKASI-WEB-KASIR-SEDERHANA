@@ -13,9 +13,14 @@
 
 <body>
 
-    <aside class="sidebar">
+    <button class="hamburger-toggle" id="hamburgerToggle">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <aside class="sidebar" id="sidebar">
         <div class="brand">
-            <img src="{{ asset('Logo.png') }}" style="height: 60px; width: 60px;" alt="Logo Admin Kafe"> Admin Kafe
+            <img src="{{ asset('Logo.png') }}" style="height: 60px; width: 60px;" alt="Logo Admin Kafe">
+            <span>Admin Kafe</span>
         </div>
         <ul class="nav-links">
             <li><a href="{{ route('pos.index') }}" class="{{ request()->routeIs('pos.*') ? 'active' : '' }}"><i
@@ -28,15 +33,16 @@
             <li><a href="{{ route('transactions.history') }}"
                     class="{{ request()->routeIs('transactions.*') ? 'active' : '' }}"><i
                         class="fa-solid fa-receipt"></i> Riwayat Transaksi</a></li>
-            <form action="{{ route('logout') }}" method="POST">
+            <form action="{{ route('logout') }}" method="POST" style="margin-top: 2rem;">
                 @csrf
-                <button type="submit" class="no-underline text-left text-white/80 px-4 py-3 rounded-[var(--radius)] transition-all duration-300 ease-in-out font-medium block w-full hover:translate-x-[5px] hover:text-red-600 hover:bg-[#6F4E37] transform">
+                <button type="submit" style="display: block; width: 100%; text-align: left; text-decoration: none; color: rgba(255, 255, 255, 0.8); padding: 0.75rem 1rem; border-radius: var(--radius); transition: all 0.3s ease; font-weight: 500; border: none; background: none; cursor: pointer;" onmouseover="this.style.backgroundColor='var(--primary-color)'; this.style.color='white'; this.style.transform='translateX(5px)';" onmouseout="this.style.backgroundColor=''; this.style.color='rgba(255, 255, 255, 0.8)'; this.style.transform='translateX(0)';">
                     <i class="fa-solid fa-sign-out-alt"></i> Logout
                 </button>
             </form>
-
         </ul>
     </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <main class="main-content">
         @if (session('success'))
@@ -57,8 +63,55 @@
     @stack('scripts')
 
     <script>
+        // Hamburger Menu Toggle
+        const hamburgerToggle = document.getElementById('hamburgerToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('closed');
+            sidebarOverlay.classList.toggle('active');
+        }
+
+        hamburgerToggle.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', toggleSidebar);
+
+        // Close sidebar when link is clicked
+        const sidebarLinks = document.querySelectorAll('.sidebar a, .sidebar button');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.add('closed');
+                    sidebarOverlay.classList.remove('active');
+                }
+            });
+        });
+
+        // Close sidebar on page load (mobile)
+        if (window.innerWidth <= 768) {
+            sidebar.classList.add('closed');
+        }
+
+        // Handle resize events
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('closed');
+                sidebarOverlay.classList.remove('active');
+            } else {
+                sidebar.classList.add('closed');
+                sidebarOverlay.classList.remove('active');
+            }
+        });
+
+        // Auto hide alerts after 5 seconds
         setTimeout(() => {
-            document.getElementById('alert').style.display = 'none';
+            const alert = document.getElementById('alert');
+            if (alert) {
+                alert.style.animation = 'slideDown 0.3s ease reverse';
+                setTimeout(() => {
+                    alert.style.display = 'none';
+                }, 300);
+            }
         }, 5000);
     </script>
 </body>
