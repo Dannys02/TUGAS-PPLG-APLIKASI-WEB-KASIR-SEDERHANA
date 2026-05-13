@@ -19,8 +19,24 @@
 
     <aside class="sidebar" id="sidebar">
         <div class="brand">
-            <img src="{{ asset('Logo.png') }}" style="height: 60px; width: 60px;" alt="Logo Admin Kafe">
-            <span>Admin Kafe</span>
+            @if ($globalUser && $globalUser->logo)
+                <img src="{{ asset($globalUser->logo) }}" alt="{{ $globalUser->name }}"
+                    style="height: 60px; width: 60px; object-fit: cover;">
+            @else
+                <div
+                    style="
+            height: 60px;
+            width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f1f1;
+            border-radius: 10px;
+        ">
+                    <i class="fa-solid fa-gear" style="font-size: 28px;"></i>
+                </div>
+            @endif
+            <span class="text-[16px]">{{ $globalUser->name ?? 'Kasir Kafe' }}</span>
         </div>
         <ul class="nav-links">
             <li><a href="{{ route('pos.index') }}" class="{{ request()->routeIs('pos.*') ? 'active' : '' }}"><i
@@ -33,9 +49,15 @@
             <li><a href="{{ route('transactions.history') }}"
                     class="{{ request()->routeIs('transactions.*') ? 'active' : '' }}"><i
                         class="fa-solid fa-receipt"></i> Riwayat Transaksi</a></li>
+            <li><a href="{{ route('settings.edit') }}"
+                    class="{{ request()->routeIs('settings.*') ? 'active' : '' }}"><i class="fa-solid fa-gear"></i>
+                    Pengaturan</a></li>
             <form action="{{ route('logout') }}" method="POST" style="margin-top: 2rem;">
                 @csrf
-                <button type="submit" style="display: block; width: 100%; text-align: left; text-decoration: none; color: rgba(255, 255, 255, 0.8); padding: 0.75rem 1rem; border-radius: var(--radius); transition: all 0.3s ease; font-weight: 500; border: none; background: none; cursor: pointer;" onmouseover="this.style.backgroundColor='var(--primary-color)'; this.style.color='white'; this.style.transform='translateX(5px)';" onmouseout="this.style.backgroundColor=''; this.style.color='rgba(255, 255, 255, 0.8)'; this.style.transform='translateX(0)';">
+                <button type="submit"
+                    style="display: block; width: 100%; text-align: left; text-decoration: none; color: rgba(255, 255, 255, 0.8); padding: 0.75rem 1rem; border-radius: var(--radius); transition: all 0.3s ease; font-weight: 500; border: none; background: none; cursor: pointer;"
+                    onmouseover="this.style.backgroundColor='var(--primary-color)'; this.style.color='white'; this.style.transform='translateX(5px)';"
+                    onmouseout="this.style.backgroundColor=''; this.style.color='rgba(255, 255, 255, 0.8)'; this.style.transform='translateX(0)';">
                     <i class="fa-solid fa-sign-out-alt"></i> Logout
                 </button>
             </form>

@@ -23,6 +23,10 @@ Route::middleware(['auth'])->group(function () {
     //print
     Route::get('/transactions/print', [TransactionController::class, 'print'])
         ->name('transactions.print');
+
+    // Settings routes
+    Route::get('/settings', [AuthController::class, 'showSettings'])->name('settings.edit');
+    Route::post('/settings', [AuthController::class, 'updateSettings'])->name('settings.update');
 });
 
 // Auth routes

@@ -54,4 +54,52 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         return redirect()->route('login')->with('success', 'Berhasil logout');
     }
+
+    public function showSettings() {
+        $user = Auth::user();
+        return view('auth.settings', ['user' => $user]);
+    }
+
+    public function updateSettings(Request $request) {
+        $user = Auth::user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:500',
+            'password' => 'nullable|string|min:8|confirmed',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $userData = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'logo' => $request->logo,
+        ];
+
+        // Handle logo upload
+        if ($request->hasFile('logo')) {
+            // Delete old logo if exists
+            if ($user->logo && file_exists(public_path($user->logo))) {
+                unlink(public_path($user->logo));
+            }
+
+            // Store new logo
+            $file = $request->file('logo');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('logos'), $filename);
+
+            $userData['logo'] = 'logos/' . $filename;
+        }
+
+        // Handle password update
+        if ($request->filled('password')) {
+            $userData['password'] = Hash::make($request->password);
+        }
+
+        $user->update($userData);
+
+        return redirect()->route('settings.edit')->with('success', 'Profil berhasil diperbarui');
+    }
 }
