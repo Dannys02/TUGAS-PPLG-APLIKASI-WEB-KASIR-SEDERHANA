@@ -5,15 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function showRegister() {
+    public function showRegister()
+    {
         return view('auth.register');
     }
 
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -29,11 +32,13 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Berhasil membuat akun, silakan login');
     }
 
-    public function showLogin() {
+    public function showLogin()
+    {
         return view('auth.login');
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
@@ -49,18 +54,21 @@ class AuthController extends Controller
         return back()->withErrors(['email' => 'Email atau password salah']);
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         Auth::logout();
         $request->session()->regenerateToken();
         return redirect()->route('login')->with('success', 'Berhasil logout');
     }
 
-    public function showSettings() {
+    public function showSettings()
+    {
         $user = Auth::user();
         return view('auth.settings', ['user' => $user]);
     }
 
-    public function updateSettings(Request $request) {
+    public function updateSettings(Request $request)
+    {
         $user = Auth::user();
 
         $request->validate([
@@ -75,22 +83,17 @@ class AuthController extends Controller
         $userData = [
             'name' => $request->name,
             'email' => $request->email,
-            'logo' => $request->logo,
         ];
 
         // Handle logo upload
         if ($request->hasFile('logo')) {
-            // Delete old logo if exists
-            if ($user->logo && file_exists(public_path($user->logo))) {
-                unlink(public_path($user->logo));
+            if ($user->logo) {
+                Storage::disk('public')->delete('logos/' . $user->logo);
             }
-
-            // Store new logo
             $file = $request->file('logo');
-            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('logos'), $filename);
-
-            $userData['logo'] = 'logos/' . $filename;
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('logos', $filename, 'public');
+            $userData['logo'] = $filename;
         }
 
         // Handle password update

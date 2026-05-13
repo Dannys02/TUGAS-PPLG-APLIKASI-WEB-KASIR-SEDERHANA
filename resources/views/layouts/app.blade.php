@@ -20,8 +20,8 @@
     <aside class="sidebar" id="sidebar">
         <div class="brand">
             @if ($globalUser && $globalUser->logo)
-                <img src="{{ asset($globalUser->logo) }}" alt="{{ $globalUser->name }}"
-                    style="height: 60px; width: 60px; object-fit: cover;">
+                <img src="{{ asset('storage/logos/' . $globalUser->logo) }}" alt="Logo"
+                    style="height: 60px; width: 60px; object-fit: cover; border-radius: 50%;">
             @else
                 <div
                     style="
@@ -30,8 +30,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #f1f1f1;
-            border-radius: 10px;
+            font-size: 20px;
         ">
                     <i class="fa-solid fa-gear" style="font-size: 28px;"></i>
                 </div>

@@ -15,8 +15,8 @@
                 <div style="display: flex; gap: 2rem; align-items: flex-start;">
                     <div style="flex: 0 0 auto;">
                         <div style="width: 150px; height: 150px; border-radius: 12px; background: var(--bg-color); display: flex; align-items: center; justify-content: center; border: 2px dashed var(--border-color); position: relative; overflow: hidden;">
-                            @if ($user->logo && file_exists(public_path($user->logo)))
-                                <img src="{{ asset($user->logo) }}" alt="Logo" style="max-width: 100%; max-height: 100%; object-fit: cover;">
+                            @if ($user->logo)
+                                <img src="{{ asset('storage/logos/' . $user->logo) }}" alt="Logo" style="max-width: 100%; max-height: 100%; object-fit: cover;">
                             @else
                                 <div style="text-align: center; color: var(--text-muted);">
                                     <i class="fa-solid fa-image" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>
