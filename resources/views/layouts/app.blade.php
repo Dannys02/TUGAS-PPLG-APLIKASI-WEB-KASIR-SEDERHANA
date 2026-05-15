@@ -81,6 +81,8 @@
         @yield('content')
     </main>
 
+
+
     @stack('scripts')
 
     <script>
