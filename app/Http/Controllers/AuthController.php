@@ -74,9 +74,8 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:500',
             'password' => 'nullable|string|min:8|confirmed',
+            'current_password' => 'nullable|required_with:password',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -98,6 +97,12 @@ class AuthController extends Controller
 
         // Handle password update
         if ($request->filled('password')) {
+            if (!Hash::check($request->current_password, $user->password)) {
+                return back()->withErrors([
+                    'current_password' => 'Password saat ini salah'
+                ]);
+            }
+
             $userData['password'] = Hash::make($request->password);
         }
 

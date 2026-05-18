@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ asset('Logo.png') }}" type="image/png">
-    <title>Admin Kafe | Aplikasi Kasir</title>
+    <title>Admin {{ $globalUser->name }} | Aplikasi Kasir</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,19 +21,18 @@
         <div class="brand">
             @if ($globalUser && $globalUser->logo)
                 <img src="{{ asset('storage/logos/' . $globalUser->logo) }}" alt="Logo"
-                    style="height: 60px; width: 60px; object-fit: cover; border-radius: 50%;">
+                    style="height: 60px; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%;">
             @else
-                <div
-                    style="
-            height: 60px;
-            width: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        ">
-                    <i class="fa-solid fa-gear" style="font-size: 28px;"></i>
-                </div>
+                    <div style="
+                    height: 60px;
+                    width: 60px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 20px;
+                ">
+                        <i class="fa-solid fa-gear" style="font-size: 28px;"></i>
+                    </div>
             @endif
             <span class="text-[16px]">{{ $globalUser->name ?? 'Kasir Kafe' }}</span>
         </div>
@@ -48,8 +47,8 @@
             <li><a href="{{ route('transactions.history') }}"
                     class="{{ request()->routeIs('transactions.*') ? 'active' : '' }}"><i
                         class="fa-solid fa-receipt"></i> Riwayat Transaksi</a></li>
-            <li><a href="{{ route('settings.edit') }}"
-                    class="{{ request()->routeIs('settings.*') ? 'active' : '' }}"><i class="fa-solid fa-gear"></i>
+            <li><a href="{{ route('settings.edit') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}"><i
+                        class="fa-solid fa-gear"></i>
                     Pengaturan</a></li>
             <form action="{{ route('logout') }}" method="POST" style="margin-top: 2rem;">
                 @csrf
