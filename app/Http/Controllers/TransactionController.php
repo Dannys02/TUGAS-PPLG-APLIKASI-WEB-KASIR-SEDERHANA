@@ -66,51 +66,149 @@ class TransactionController extends Controller
         }
     }
 
-    public function history()
+    public function history(Request $request)
     {
+        // Get filter parameters dengan default bulan-tahun sekarang
         $now = Carbon::now();
-        // $transactions = Transaction::orderBy('created_at', 'desc')->get();
-        $transactions = Transaction::whereMonth('created_at', $now->month)
-        ->whereYear('created_at', $now->year)
-        ->orderBy('created_at', 'desc')
-        ->get();
+        $month = $request->get('month', $now->month);
+        $year = $request->get('year', $now->year);
 
-        $totalOmzet = Transaction::sum('total');
+        // Validasi input filter
+        $month = max(1, min(12, (int)$month));
+        $year = max(2020, min(date('Y') + 1, (int)$year));
 
-        $bestSeller = DetailTransaction::selectRaw('menu_id, SUM(jumlah) as total_sold')
-            ->groupBy('menu_id')
-            ->orderByDesc('total_sold')
-            ->first();
+        // Query transaksi berdasarkan filter bulan-tahun
+        $transactions = Transaction::byMonthYear($month, $year)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        $totalProductsSold = DetailTransaction::sum('jumlah');
+        // Hitung statistik berdasarkan filter yang dipilih
+        $totalOmzet = $this->calculateTotalOmzet($month, $year);
+        $bestSeller = $this->getBestSellerByMonthYear($month, $year);
+        $totalProductsSold = $this->calculateTotalProductsSold($month, $year);
 
-        return view('transactions.index', compact('transactions', 'totalOmzet', 'bestSeller', 'totalProductsSold'));
+        // Data untuk dropdown filter
+        $currentMonth = $now->month;
+        $currentYear = $now->year;
+
+        // Generate list bulan untuk dropdown (12 bulan terakhir dan bulan depan)
+        $monthsList = $this->generateAvailableMonths();
+
+        return view('transactions.index', compact(
+            'transactions',
+            'totalOmzet',
+            'bestSeller',
+            'totalProductsSold',
+            'month',
+            'year',
+            'currentMonth',
+            'currentYear',
+            'monthsList'
+        ));
     }
 
-    public function print()
+    public function print(Request $request)
     {
-        $transactions = Transaction::latest()->get();
+        // Get filter parameters dengan default bulan-tahun sekarang
+        $now = Carbon::now();
+        $month = $request->get('month', $now->month);
+        $year = $request->get('year', $now->year);
 
-        $totalOmzet = Transaction::sum('total');
+        // Validasi input filter
+        $month = max(1, min(12, (int)$month));
+        $year = max(2020, min(date('Y') + 1, (int)$year));
 
-        $bestSeller = DetailTransaction::selectRaw('menu_id, SUM(jumlah) as total_sold')
-            ->groupBy('menu_id')
-            ->orderByDesc('total_sold')
-            ->first();
+        // Query transaksi berdasarkan filter bulan-tahun
+        $transactions = Transaction::byMonthYear($month, $year)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        $totalProductsSold = DetailTransaction::sum('jumlah');
+        // Hitung statistik berdasarkan filter yang dipilih
+        $totalOmzet = $this->calculateTotalOmzet($month, $year);
+        $bestSeller = $this->getBestSellerByMonthYear($month, $year);
+        $totalProductsSold = $this->calculateTotalProductsSold($month, $year);
 
-        $date = Carbon::now()->format('d_m_Y');
-        $fileName = "laporan_keuangan_{$date}.pdf";
+        // Generate nama file dengan bulan-tahun
+        $monthName = $this->getMonthName($month);
+        $fileName = "Laporan_Keuangan_{$monthName}_{$year}.pdf";
 
         $pdf = Pdf::loadView('transactions.print', compact(
             'transactions',
             'totalOmzet',
             'bestSeller',
-            'totalProductsSold'
+            'totalProductsSold',
+            'month',
+            'year',
+            'monthName'
         ));
 
         return $pdf->download($fileName);
+    }
+
+    /**
+     * Hitung total omzet berdasarkan bulan-tahun filter
+     */
+    private function calculateTotalOmzet(int $month, int $year): int
+    {
+        return (int) Transaction::byMonthYear($month, $year)->sum('total');
+    }
+
+    /**
+     * Dapatkan produk terlaris berdasarkan bulan-tahun filter
+     */
+    private function getBestSellerByMonthYear(int $month, int $year)
+    {
+        return DetailTransaction::selectRaw('menu_id, SUM(jumlah) as total_sold')
+            ->whereHas('transaction', function ($query) use ($month, $year) {
+                $query->byMonthYear($month, $year);
+            })
+            ->groupBy('menu_id')
+            ->orderByDesc('total_sold')
+            ->first();
+    }
+
+    /**
+     * Hitung total produk terjual berdasarkan bulan-tahun filter
+     */
+    private function calculateTotalProductsSold(int $month, int $year): int
+    {
+        return (int) DetailTransaction::whereHas('transaction', function ($query) use ($month, $year) {
+            $query->byMonthYear($month, $year);
+        })->sum('jumlah');
+    }
+
+    /**
+     * Generate list bulan yang tersedia untuk dropdown
+     */
+    private function generateAvailableMonths(): array
+    {
+        $months = [];
+        for ($i = 12; $i >= 1; $i--) {
+            $months[$i] = $this->getMonthName($i);
+        }
+        return $months;
+    }
+
+    /**
+     * Get nama bulan dalam bahasa Indonesia
+     */
+    private function getMonthName(int $month): string
+    {
+        $monthNames = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember'
+        ];
+        return $monthNames[$month] ?? 'Tidak Dikenal';
     }
 
     public function destroy($id)

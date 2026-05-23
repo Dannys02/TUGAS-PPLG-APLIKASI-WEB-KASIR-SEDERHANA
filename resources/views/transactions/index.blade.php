@@ -4,7 +4,7 @@
     <div
         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
         <h1 class="header-title" style="margin-bottom: 0;"><i class="fa-solid fa-receipt"></i> Riwayat Transaksi</h1>
-        <a href="{{ route('transactions.print') }}" class="btn btn-primary">
+        <a href="{{ route('transactions.print', ['month' => $month, 'year' => $year]) }}" class="btn btn-primary">
             <i class="fa-solid fa-file-pdf"></i> Export PDF
         </a>
     </div>
@@ -80,8 +80,47 @@
 
     <!-- Transactions Table -->
     <div class="card">
-        <h2 style="margin-bottom: 1.5rem; color: var(--primary-dark);"><i class="fa-solid fa-list"></i> Daftar Transaksi
-        </h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+            <h2 style="margin: 0; color: var(--primary-dark);"><i class="fa-solid fa-list"></i> Daftar Transaksi</h2>
+
+            <!-- Filter Form -->
+            <form id="filterForm" method="GET" action="{{ route('transactions.history') }}" style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <label for="month" style="font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">Bulan:</label>
+                    <select id="month" name="month"
+                        style="padding: 0.5rem 0.75rem; border: 1px solid var(--border-color); border-radius: 4px; background-color: white; color: var(--text-dark); font-size: 0.9rem; cursor: pointer;"
+                        onchange="document.getElementById('filterForm').submit();">
+                        @for ($i = 1; $i <= 12; $i++)
+                            <option value="{{ $i }}" @if ($month == $i) selected @endif>
+                                {{ $monthsList[$i] ?? 'Bulan ' . $i }}
+                            </option>
+                        @endfor
+                    </select>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; gap: 0.5rem; align-items: center;">
+                    <label for="year" style="font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">Tahun:</label>
+                    <select id="year" name="year"
+                        style="padding: 0.5rem 1.75rem; border: 1px solid var(--border-color); border-radius: 4px; background-color: white; color: var(--text-dark); font-size: 0.9rem; cursor: pointer;"
+                        onchange="document.getElementById('filterForm').submit();">
+                        @php
+                            $startYear = 2020;
+                            $endYear = (int) date('Y') + 1;
+                        @endphp
+                        @for ($y = $endYear; $y >= $startYear; $y--)
+                            <option value="{{ $y }}" @if ($year == $y) selected @endif>{{ $y }}</option>
+                        @endfor
+                    </select>
+                </div>
+
+                @if ($month != $currentMonth || $year != $currentYear)
+                    <a href="{{ route('transactions.history') }}" style="color: var(--primary-color); text-decoration: none; font-size: 0.9rem; font-weight: 500; cursor: pointer; padding: 0.5rem 0.75rem; border: 1px solid var(--primary-color); border-radius: 4px; transition: all 0.3s ease;">
+                        <i class="fa-solid fa-rotate-left"></i> Reset ke Bulan Ini
+                    </a>
+                @endif
+            </form>
+        </div>
+
         <div class="table-container">
             <table>
                 <thead>

@@ -767,3 +767,141 @@ input[type="number"] {
         display: block;
     }
 }
+
+/* Filter Form Styling */
+#filterForm {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0.5rem 0;
+}
+
+#filterForm > div {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+#filterForm label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin: 0;
+    white-space: nowrap;
+}
+
+#filterForm select {
+    padding: 0.65rem 0.85rem;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    background-color: white;
+    color: var(--text-main);
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236f4e37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.65rem center;
+    background-size: 1.2em 1.2em;
+    padding-right: 2.4rem;
+}
+
+#filterForm select:hover {
+    border-color: var(--accent-color);
+    background-color: #fafafa;
+}
+
+#filterForm select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: white;
+    box-shadow: 0 0 0 4px rgba(212, 163, 115, 0.1);
+}
+
+#filterForm a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.65rem 0.85rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    background-color: transparent;
+    white-space: nowrap;
+}
+
+#filterForm a:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(111, 78, 55, 0.2);
+}
+
+#filterForm a:active {
+    transform: translateY(0);
+}
+
+/* Responsive Filter Form */
+@media (max-width: 1024px) {
+    #filterForm {
+        gap: 0.5rem;
+    }
+
+    #filterForm select {
+        padding: 0.55rem 0.7rem;
+        font-size: 0.85rem;
+    }
+
+    #filterForm label {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 768px) {
+    #filterForm {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    #filterForm > div {
+        flex: 0 1 auto;
+    }
+
+    #filterForm select {
+        padding: 0.5rem 0.65rem;
+        font-size: 0.8rem;
+    }
+
+    #filterForm label {
+        font-size: 0.75rem;
+    }
+
+    #filterForm a {
+        padding: 0.5rem 0.65rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* Text Utilities */
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
