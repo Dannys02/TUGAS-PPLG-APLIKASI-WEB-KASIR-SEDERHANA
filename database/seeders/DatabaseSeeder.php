@@ -21,5 +21,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Generate dummy transaction data for testing
+        $this->call([
+            TransactionSeeder::class,
+        ]);
     }
 }
