@@ -31,10 +31,10 @@
                     justify-content: center;
                     font-size: 20px;
                 ">
-                        <i class="fa-solid fa-gear" style="font-size: 28px;"></i>
+                        <i class="fa-solid fa-gear" style="font-size: 40px;"></i>
                     </div>
             @endif
-            <span class="text-[16px]">{{ $globalUser->name ?? 'Kasir Kafe' }}</span>
+            <span class="text-[16px] uppercase">{{ $globalUser->name ?? 'Kasir Kafe' }}</span>
         </div>
         <ul class="nav-links">
             <li><a href="{{ route('pos.index') }}" class="{{ request()->routeIs('pos.*') ? 'active' : '' }}"><i

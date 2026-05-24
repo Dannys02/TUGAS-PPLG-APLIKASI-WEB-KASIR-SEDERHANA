@@ -9,7 +9,7 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Category::query();
+        $query = Category::where('user_id', auth()->user()->id);
 
         // search
         if ($request->filled('search')) {
@@ -25,14 +25,30 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(['nama_kategori' => 'required|string|max:255|unique:categories,nama_kategori']);
-        Category::create($request->all());
+        $request->validate([
+            'nama_kategori' => [
+                'required',
+                'string',
+                'max:255',
+                \Illuminate\Validation\Rule::unique('categories')
+                    ->where('user_id', auth()->user()->id)
+            ]
+        ]);
+        Category::create([
+            'nama_kategori' => $request->nama_kategori,
+            'user_id' => auth()->user()->id
+        ]);
 
         return redirect()->back()->with('success', 'Kategori berhasil ditambahkan.');
     }
 
     public function update(Request $request, Category $category)
     {
+        // Pastikan kategori milik user yang login
+        if ($category->user_id !== auth()->user()->id) {
+            abort(403, 'Unauthorised');
+        }
+
         $request->validate(['nama_kategori' => 'required|string|max:255']);
         $category->update($request->all());
         return redirect()->route('categories.index')->with('success', 'Kategori berhasil diubah.');
@@ -40,21 +56,23 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        $categories = Category::paginate(5);
-        $editCategory = Category::findOrFail($id);
+        $categories = Category::where('user_id', auth()->user()->id)->paginate(5);
+        $editCategory = Category::where('user_id', auth()->user()->id)->findOrFail($id);
         return view('categories.index', compact('categories', 'editCategory'));
     }
 
     public function destroy(Category $category)
     {
+        // Pastikan kategori milik user yang login
+        if ($category->user_id !== auth()->user()->id) {
+            abort(403, 'Unauthorised');
+        }
+
         try {
             $category->delete();
             return back()->with('success', 'Kategori berhasil dihapus');
         } catch (\Exception $e) {
             return back()->with('error', 'Kategori masih digunakan oleh menu!');
         }
-
-        // $category->delete();
-        // return redirect()->back()->with('success', 'Kategori berhasil dihapus.');
     }
 }

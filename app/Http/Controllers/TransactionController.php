@@ -14,7 +14,7 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $menus = Menu::with('category')->where('stok', '>', 0)->get();
+        $menus = Menu::where('user_id', auth()->user()->id)->with('category')->where('stok', '>', 0)->get();
         return view('pos.index', compact('menus'));
     }
 
@@ -35,7 +35,8 @@ class TransactionController extends Controller
                 $transaction = Transaction::create([
                     'kode_transaksi' => $kode,
                     'tanggal' => date('Y-m-d'),
-                    'total' => 0
+                    'total' => 0,
+                    'user_id' => auth()->user()->id
                 ]);
 
                 foreach ($request->cart as $item) {
@@ -77,8 +78,9 @@ class TransactionController extends Controller
         $month = max(1, min(12, (int)$month));
         $year = max(2020, min(date('Y') + 1, (int)$year));
 
-        // Query transaksi berdasarkan filter bulan-tahun
-        $transactions = Transaction::byMonthYear($month, $year)
+        // Query transaksi berdasarkan filter bulan-tahun DAN user
+        $transactions = Transaction::where('user_id', auth()->user()->id)
+            ->byMonthYear($month, $year)
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -118,8 +120,9 @@ class TransactionController extends Controller
         $month = max(1, min(12, (int)$month));
         $year = max(2020, min(date('Y') + 1, (int)$year));
 
-        // Query transaksi berdasarkan filter bulan-tahun
-        $transactions = Transaction::byMonthYear($month, $year)
+        // Query transaksi berdasarkan filter bulan-tahun DAN user
+        $transactions = Transaction::where('user_id', auth()->user()->id)
+            ->byMonthYear($month, $year)
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -146,21 +149,24 @@ class TransactionController extends Controller
     }
 
     /**
-     * Hitung total omzet berdasarkan bulan-tahun filter
+     * Hitung total omzet berdasarkan bulan-tahun filter DAN user
      */
     private function calculateTotalOmzet(int $month, int $year): int
     {
-        return (int) Transaction::byMonthYear($month, $year)->sum('total');
+        return (int) Transaction::where('user_id', auth()->user()->id)
+            ->byMonthYear($month, $year)
+            ->sum('total');
     }
 
     /**
-     * Dapatkan produk terlaris berdasarkan bulan-tahun filter
+     * Dapatkan produk terlaris berdasarkan bulan-tahun filter DAN user
      */
     private function getBestSellerByMonthYear(int $month, int $year)
     {
         return DetailTransaction::selectRaw('menu_id, SUM(jumlah) as total_sold')
             ->whereHas('transaction', function ($query) use ($month, $year) {
-                $query->byMonthYear($month, $year);
+                $query->where('user_id', auth()->user()->id)
+                      ->byMonthYear($month, $year);
             })
             ->groupBy('menu_id')
             ->orderByDesc('total_sold')
@@ -168,12 +174,13 @@ class TransactionController extends Controller
     }
 
     /**
-     * Hitung total produk terjual berdasarkan bulan-tahun filter
+     * Hitung total produk terjual berdasarkan bulan-tahun filter DAN user
      */
     private function calculateTotalProductsSold(int $month, int $year): int
     {
         return (int) DetailTransaction::whereHas('transaction', function ($query) use ($month, $year) {
-            $query->byMonthYear($month, $year);
+            $query->where('user_id', auth()->user()->id)
+                  ->byMonthYear($month, $year);
         })->sum('jumlah');
     }
 
@@ -213,7 +220,7 @@ class TransactionController extends Controller
 
     public function destroy($id)
     {
-        $transaction = Transaction::findOrFail($id);
+        $transaction = Transaction::where('user_id', auth()->user()->id)->findOrFail($id);
         $transaction->delete();
 
         return redirect()->back()->with('success', 'Hapus transaksi berhasil');

@@ -10,6 +10,17 @@ class Transaction extends Model
 {
     protected $guarded = [];
 
+    /**
+     * Relasi Many-to-One dengan User
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Relasi One-to-Many dengan DetailTransaction
+     */
     public function details()
     {
         return $this->hasMany(DetailTransaction::class);

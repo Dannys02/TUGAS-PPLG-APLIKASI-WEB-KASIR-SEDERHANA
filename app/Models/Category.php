@@ -8,8 +8,19 @@ class Category extends Model
 {
     protected $guarded = [];
 
+    /**
+     * Relasi Many-to-One dengan User
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Relasi One-to-Many dengan Menu
+     */
     public function menus()
     {
-        return $this->hasMany(Menu::class);
+        return $this->hasMany(Menu::class, 'kategori_id');
     }
 }
