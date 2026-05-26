@@ -62,7 +62,7 @@ body {
   width: 250px;
   background: linear-gradient(180deg, var(--primary-dark) 0%, #3a2818 100%);
   color: white;
-  padding: 2rem 1.5rem;
+  padding: 4rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -518,13 +518,14 @@ tr:hover {
   align-items: center;
   gap: 0.4rem;
   /* background-color: rgba(111, 78, 55, 0.08); */
-  padding: 0.4rem 0.6rem;
+  padding: 0.4rem 0.0rem;
   border-radius: 6px;
 }
 
 .qty-btn {
   width: 32px;
   height: 32px;
+  padding: 0 5px;
   border-radius: 6px;
   border: none;
   background-color: var(--primary-color);
@@ -638,7 +639,7 @@ input[type="number"] {
     width: 100%;
     height: auto;
     max-height: calc(100vh - 70px);
-    top: 70px;
+    top: 5px;
   }
 
   .sidebar.closed {
@@ -732,11 +733,6 @@ input[type="number"] {
   .btn-sm {
     padding: 0.4rem 0.6rem;
     font-size: 0.8rem;
-  }
-
-  .qty-controls {
-    flex-direction: column;
-    gap: 0.3rem;
   }
 
   .cart-item {
