@@ -76,6 +76,7 @@
 @push('scripts')
 <script>
   let cart = {};
+  let blockCheckout = false;
 
   function formatRupiah(number) {
     return new Intl.NumberFormat('id-ID', {
@@ -134,14 +135,21 @@
     if (isNaN(newQty) || newQty < 1) {
       cart[id].qty = 1;
     } else if (newQty > cart[id].max) {
-      // Kunci langsung jumlahnya ke stok maksimal di database
       cart[id].qty = cart[id].max;
+
+      // Aktifkan flag penahan sebelum memunculkan alert
+      blockCheckout = true;
       alert('Stok tidak mencukupi! Stok maksimal: ' + cart[id].max);
+
+      // Matikan flag setelah jeda singkat agar tombol bisa diklik lagi nanti
+      setTimeout(() => {
+      blockCheckout = false;
+      }, 300);
+
     } else {
       cart[id].qty = newQty;
     }
 
-    // SEGERA RENDER ULANG: Ini akan memaksa value di kotak input balik ke angka maksimal
     renderCart();
   }
 
@@ -194,6 +202,11 @@
   }
 
   function checkout() {
+    // 4. Hentikan eksekusi checkout jika alert koreksi stok baru saja muncul
+    if (blockCheckout) {
+      return;
+    }
+
     const cartArray = Object.values(cart);
     if (cartArray.length === 0) {
       alert('Keranjang masih kosong!');

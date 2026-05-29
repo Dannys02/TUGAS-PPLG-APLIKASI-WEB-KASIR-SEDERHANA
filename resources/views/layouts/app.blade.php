@@ -52,10 +52,8 @@
       <form action="{{ route('logout') }}" method="POST" style="margin-top: 2rem;">
         @csrf
         <button type="submit"
-          style="display: block; width: 100%; text-align: left; text-decoration: none; color: rgba(255, 255, 255, 0.8); padding: 0.75rem 1rem; border-radius: var(--radius); transition: all 0.3s ease; font-weight: 500; border: none; background: none; cursor: pointer;"
-          onmouseover="this.style.backgroundColor='var(--primary-color)'; this.style.color='white'; this.style.transform='translateX(5px)';"
-          onmouseout="this.style.backgroundColor=''; this.style.color='rgba(255, 255, 255, 0.8)'; this.style.transform='translateX(0)';">
-          <i class="fa-solid fa-sign-out-alt"></i> Logout
+        class="logout-button"
+          ><i class="fa-solid fa-sign-out-alt"></i> Logout
         </button>
       </form>
     </ul>
