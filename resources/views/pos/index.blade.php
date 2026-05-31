@@ -71,12 +71,111 @@
     </div>
   </div>
 </div>
+
+<div id="custom-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black bg-opacity-50 p-4 transition-opacity duration-300">
+  <div class="w-full max-w-sm transform overflow-hidden rounded-xl bg-white p-6 text-center shadow-2xl transition-all scale-95 duration-300">
+    <div id="modal-icon-container" class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+      <i id="modal-icon" class="fa-solid fa-circle-info text-2xl"></i>
+    </div>
+    <h3 id="modal-title" class="text-lg font-bold text-gray-900 mb-2">Notifikasi</h3>
+    <p id="modal-message" class="text-sm text-gray-500 mb-6 leading-relaxed">
+      Pesan di sini...
+    </p>
+    <div id="modal-actions" class="flex justify-center gap-3">
+      <button id="modal-btn-cancel" class="hidden px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">Batal</button>
+      <button id="modal-btn-ok" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors">Oke</button>
+    </div>
+  </div>
+</div>
 @endsection
 
 @push('scripts')
 <script>
   let cart = {};
   let blockCheckout = false;
+
+  // --- ENGINE MODAL CUSTOM ---
+  function showModal( {
+    title, message, type = 'info', showCancel = false, onConfirm = null
+  }) {
+    const modal = document.getElementById('custom-modal');
+    const modalBox = modal.querySelector('div');
+    const modalTitle = document.getElementById('modal-title');
+    const modalMessage = document.getElementById('modal-message');
+    const modalIconContainer = document.getElementById('modal-icon-container');
+    const modalIcon = document.getElementById('modal-icon');
+    const btnOk = document.getElementById('modal-btn-ok');
+    const btnCancel = document.getElementById('modal-btn-cancel');
+
+    // Reset Classes & Dynamic Styling
+    modalIconContainer.className = "mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full";
+    btnOk.className = "px-5 py-2 text-sm font-medium text-white rounded-lg shadow-sm transition-colors";
+
+    if (type === 'error') {
+      modalIconContainer.classList.add('bg-red-100', 'text-red-600');
+      modalIcon.className = "fa-solid fa-circle-xmark text-2xl";
+      btnOk.classList.add('bg-red-600', 'hover:bg-red-700');
+    } else if (type === 'success') {
+      modalIconContainer.classList.add('bg-green-100', 'text-green-600');
+      modalIcon.className = "fa-solid fa-circle-check text-2xl";
+      btnOk.classList.add('bg-green-600', 'hover:bg-green-700');
+    } else if (type === 'confirm') {
+      modalIconContainer.classList.add('bg-amber-100', 'text-amber-600');
+      modalIcon.className = "fa-solid fa-circle-question text-2xl";
+      btnOk.classList.add('bg-amber-600', 'hover:bg-amber-700');
+    } else {
+      modalIconContainer.classList.add('bg-blue-100', 'text-blue-600');
+      modalIcon.className = "fa-solid fa-circle-info text-2xl";
+      btnOk.classList.add('bg-blue-600', 'hover:bg-blue-700');
+    }
+
+    modalTitle.innerText = title;
+    modalMessage.innerText = message;
+
+    // Toggle Cancel Button
+    if (showCancel) {
+      btnCancel.classList.remove('hidden');
+    } else {
+      btnCancel.classList.add('hidden');
+    }
+
+    // Show Modal with smooth transition
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    setTimeout(() => {
+    modal.classList.add('opacity-100');
+    modalBox.classList.remove('scale-95');
+    modalBox.classList.add('scale-100');
+    }, 10);
+
+    // Clean up event listeners to prevent duplication
+    const cloneOk = btnOk.cloneNode(true);
+    const cloneCancel = btnCancel.cloneNode(true);
+    btnOk.parentNode.replaceChild(cloneOk, btnOk);
+    btnCancel.parentNode.replaceChild(cloneCancel, btnCancel);
+
+    // Handle Confirm Action
+    cloneOk.addEventListener('click', () => {
+    closeModal();
+    if (onConfirm) onConfirm();
+    });
+
+    // Handle Cancel Action
+    cloneCancel.addEventListener('click', closeModal);
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('custom-modal');
+    const modalBox = modal.querySelector('div');
+    modal.classList.remove('opacity-100');
+    modalBox.classList.remove('scale-100');
+    modalBox.classList.add('scale-95');
+    setTimeout(() => {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    }, 150);
+  }
+  // ---------------------------
 
   function formatRupiah(number) {
     return new Intl.NumberFormat('id-ID', {
@@ -91,7 +190,9 @@
       if (cart[id].qty < stock) {
         cart[id].qty++;
       } else {
-        alert('Stok tidak mencukupi!');
+        showModal( {
+          title: 'Stok Terbatas', message: 'Stok tidak mencukupi!', type: 'error'
+        });
       }
     } else {
       if (stock > 0) {
@@ -104,7 +205,9 @@
           category: category
         };
       } else {
-        alert('Stok habis!');
+        showModal( {
+          title: 'Stok Habis', message: 'Stok habis!', type: 'error'
+        });
       }
     }
     renderCart();
@@ -117,7 +220,9 @@
 
     if (cart[id].qty > cart[id].max) {
       cart[id].qty = cart[id].max;
-      alert('Stok tidak mencukupi!');
+      showModal( {
+        title: 'Stok Terbatas', message: 'Stok tidak mencukupi!', type: 'error'
+      });
     }
 
     if (cart[id].qty <= 0) {
@@ -137,11 +242,13 @@
     } else if (newQty > cart[id].max) {
       cart[id].qty = cart[id].max;
 
-      // Aktifkan flag penahan sebelum memunculkan alert
       blockCheckout = true;
-      alert('Stok tidak mencukupi! Stok maksimal: ' + cart[id].max);
+      showModal( {
+        title: 'Peringatan Stok',
+        message: 'Stok tidak mencukupi! Stok maksimal: ' + cart[id].max,
+        type: 'error'
+      });
 
-      // Matikan flag setelah jeda singkat agar tombol bisa diklik lagi nanti
       setTimeout(() => {
       blockCheckout = false;
       }, 300);
@@ -196,23 +303,36 @@
       `;
     }
 
-    // Update total
     const totalElement = document.getElementById('cart-total-price');
     totalElement.innerText = formatRupiah(total);
   }
 
   function checkout() {
-    // 4. Hentikan eksekusi checkout jika alert koreksi stok baru saja muncul
+    const cartArray = Object.values(cart);
+    if (cartArray.length === 0) {
+      showModal( {
+        title: 'Keranjang Kosong', message: 'Keranjang masih kosong!', type: 'info'
+      });
+      return;
+    }
+
     if (blockCheckout) {
       return;
     }
 
-    const cartArray = Object.values(cart);
-    if (cartArray.length === 0) {
-      alert('Keranjang masih kosong!');
-      return;
-    }
+    // Mengganti confirm() bawaan dengan modal konfirmasi kustom yang memiliki tombol Batal & Oke
+    showModal( {
+      title: 'Konfirmasi Pembayaran',
+      message: 'Apakah Anda yakin ingin memproses pembayaran ini?',
+      type: 'confirm',
+      showCancel: true,
+      onConfirm: () => {
+        executeCheckout(cartArray);
+      }
+    });
+  }
 
+  function executeCheckout(cartArray) {
     fetch('{{ route('pos.store') }}', {
       method: 'POST',
       headers: {
@@ -226,15 +346,18 @@
     .then(res => res.json())
     .then(data => {
     if (data.success) {
-    alert(data.message);
-    cart = {};
-    window.location.reload();
+    showModal({
+    title: 'Berhasil',
+    message: data.message,
+    type: 'success',
+    onConfirm: () => { window.location.reload(); }
+    });
     } else {
-    alert('Gagal: ' + data.message);
+    showModal({ title: 'Gagal', message: 'Gagal: ' + data.message, type: 'error' });
     }
     })
     .catch(err => {
-    alert('Terjadi kesalahan sistem.');
+    showModal({ title: 'Error', message: 'Terjadi kesalahan sistem.', type: 'error' });
     console.error(err);
     });
   }

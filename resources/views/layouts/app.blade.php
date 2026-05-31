@@ -16,7 +16,7 @@
     <i class="fa-solid fa-bars"></i>
   </button>
 
-  <aside class="sidebar" id="sidebar">
+  <aside  class="sidebar" id="sidebar">
     <div class="brand">
       @if ($globalUser && $globalUser->logo)
       <img src="{{ asset('storage/logos/' . $globalUser->logo) }}" alt="Logo"
@@ -94,14 +94,11 @@
     sidebarOverlay.addEventListener('click', toggleSidebar);
 
     // Close sidebar when link is clicked
-    const sidebarLinks = document.querySelectorAll('.sidebar a, .sidebar button');
-    sidebarLinks.forEach(link => {
-    link.addEventListener('click', () => {
-    if (window.innerWidth <= 768) {
-    sidebar.classList.add('closed');
-    sidebarOverlay.classList.remove('active');
-    }
-    });
+    sidebar.addEventListener('click', () => {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.add('closed');
+        sidebarOverlay.classList.remove('active');
+      }
     });
 
     // Close sidebar on page load (mobile)

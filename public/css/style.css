@@ -30,7 +30,7 @@
 
 body {
   font-family: "Outfit", sans-serif;
-  background: linear-gradient(135deg, var(--bg-color) 0%, #f8e5c0 100%);
+  background: #f8e5c0;
   color: var(--text-main);
   display: flex;
 }
@@ -39,7 +39,7 @@ body {
 .hamburger-toggle {
   display: none;
   position: fixed;
-  top: 1rem;
+  top: 1.5rem;
   left: 1.5rem;
   z-index: 1001;
   background: var(--primary-color);
@@ -56,7 +56,8 @@ body {
   width: 250px;
   background: linear-gradient(180deg, var(--primary-dark) 0%, #3a2818 100%);
   color: white;
-  padding: 4rem 1.5rem;
+  padding-inline: 1.5rem;
+  padding-top: 5rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
