@@ -8,41 +8,73 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AuthController;
 
 Route::middleware(['auth'])->group(function () {
-  Route::get('/', function () {
-    return redirect()->route('pos.index');
-  });
+    Route::get('/', function () {
+        return redirect()->route('pos.index');
+    });
 
-  Route::resource('categories',
-    CategoryController::class);
-  Route::resource('menus',
-    MenuController::class);
+    Route::resource(
+        'categories',
+        CategoryController::class
+    );
+    Route::resource(
+        'menus',
+        MenuController::class
+    );
 
-  Route::get('/pos',
-    [TransactionController::class,
-      'index'])->name('pos.index');
-  Route::post('/pos',
-    [TransactionController::class,
-      'store'])->name('pos.store');
-  Route::delete('/pos/{id}',
-    [TransactionController::class,
-      'destroy'])->name('pos.destroy');
-  Route::get('/transactions',
-    [TransactionController::class,
-      'history'])->name('transactions.history');
+    Route::get(
+        '/pos',
+        [
+            TransactionController::class,
+            'index'
+        ]
+    )->name('pos.index');
+    Route::post(
+        '/pos',
+        [
+            TransactionController::class,
+            'store'
+        ]
+    )->name('pos.store');
+    Route::delete(
+        '/pos/{id}',
+        [
+            TransactionController::class,
+            'destroy'
+        ]
+    )->name('pos.destroy');
+    Route::get(
+        '/transactions',
+        [
+            TransactionController::class,
+            'history'
+        ]
+    )->name('transactions.history');
 
-  //print
-  Route::get('/transactions/print',
-    [TransactionController::class,
-      'print'])
-  ->name('transactions.print');
+    //print
+    Route::get(
+        '/transactions/print',
+        [
+            TransactionController::class,
+            'print'
+        ]
+    )
+        ->name('transactions.print');
 
-  // Settings routes
-  Route::get('/settings',
-    [AuthController::class,
-      'showSettings'])->name('settings.edit');
-  Route::post('/settings',
-    [AuthController::class,
-      'updateSettings'])->name('settings.update');
+    // Settings routes
+    Route::get(
+        '/settings',
+        [
+            AuthController::class,
+            'showSettings'
+        ]
+    )->name('settings.edit');
+    Route::post(
+        '/settings',
+        [
+            AuthController::class,
+            'updateSettings'
+        ]
+    )->name('settings.update');
 });
 
 // Auth routes
@@ -51,3 +83,10 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.st
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.store');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Password reset routes
+Route::get('/forgot-password', [AuthController::class, 'showForgot'])->name('forgot-password');
+Route::post('/forgot-password', [AuthController::class, 'sendReset'])->name('forgot-password.send');
+
+Route::get('/reset-password/{token}', [AuthController::class, 'showReset'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');

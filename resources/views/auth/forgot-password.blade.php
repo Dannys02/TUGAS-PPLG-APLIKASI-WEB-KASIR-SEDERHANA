@@ -5,33 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login | Aplikasi Kasir</title>
+    <title>Lupa Password | Aplikasi Kasir</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
-
-    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-[#f8f5f2] min-h-screen flex flex-col space-y-4 items-center justify-center px-4">
-
     @if (session('success'))
-        <div id="alert" class="alert alert-success bg-green-600 mt-6">
+        <div id="alert" class="alert alert-success bg-green-600">
             <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
         </div>
     @endif
 
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
+
         <div class="bg-[#6f4e37] py-8 px-6 text-center">
-            <h1 class="text-3xl font-bold text-white">Aplikasi Kasir</h1>
+            <h1 class="text-3xl font-bold text-white">Lupa Password</h1>
             <p class="text-[#f3e9dc] mt-2 text-sm">
-                Selamat datang kembali
+                Masukkan email Anda untuk mendapatkan link reset password
             </p>
         </div>
 
         <div class="p-8">
-            <form action="{{ route('login.store') }}" method="POST" class="space-y-5">
+            <form action="{{ route('forgot-password.send') }}" method="POST" class="space-y-5">
                 @csrf
+
                 <div>
                     <label for="email" class="block mb-2 text-sm font-semibold text-[#5c4033]">
                         Email
@@ -39,7 +38,8 @@
                     <input type="email" id="email" name="email" placeholder="Email Anda"
                         class="w-full px-4 py-3 rounded-xl border border-[#d6c3b3]
           focus:outline-none focus:ring-2 focus:ring-[#6f4e37]
-          bg-[#fffdfb]">
+          bg-[#fffdfb]"
+                        required>
 
                     @error('email')
                         <p class="error text-red-500 text-sm mt-2 transition-opacity duration-500 opacity-100">
@@ -48,40 +48,23 @@
                     @enderror
                 </div>
 
-                <div>
-                    <label for="password" class="block mb-2 text-sm font-semibold text-[#5c4033]">
-                        Password
-                    </label>
-
-                    <input type="password" id="password" name="password" placeholder="********"
-                        class="w-full px-4 py-3 rounded-xl border border-[#d6c3b3]
-          focus:outline-none focus:ring-2 focus:ring-[#6f4e37]
-          bg-[#fffdfb]">
-
-                    @error('password')
-                        <p class="error text-red-500 text-sm mt-2 transition-opacity duration-500 opacity-100">
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
-
-                <p class="text-sm text-[#5c4033]">
-                    Lupa password?
-                    <a href="{{ route('forgot-password') }}" class="text-[#6f4e37] font-semibold hover:underline">
-                        Reset password
-                    </a>
-                </p>
+                @if (session('status'))
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg text-sm">
+                        {{ session('status') }}
+                    </div>
+                @endif
 
                 <button type="submit"
                     class="w-full bg-[#6f4e37] hover:bg-[#5c4033]
           text-white font-semibold py-3 rounded-xl transition duration-300">
-                    Login
+                    Kirim Link Reset
                 </button>
-                <div>
-                    <p class="text-sm text-center text-[#5c4033]">
-                        Belum punya akun?
-                        <a href="{{ route('register') }}" class="text-[#6f4e37] font-semibold hover:underline">
-                            Daftar di sini
+
+                <div class="text-center">
+                    <p class="text-sm text-[#5c4033]">
+                        Kembali ke halaman
+                        <a href="{{ route('login') }}" class="text-[#6f4e37] font-semibold hover:underline">
+                            Login
                         </a>
                     </p>
                 </div>
@@ -112,17 +95,6 @@
                 }, 5000);
             }
         });
-
-        // Auto hide alerts after 5 seconds
-        setTimeout(() => {
-            const alert = document.getElementById('alert');
-            if (alert) {
-                alert.style.animation = 'slideDown 0.3s ease reverse';
-                setTimeout(() => {
-                    alert.style.display = 'none';
-                }, 300);
-            }
-        }, 5000);
     </script>
 
 </body>
