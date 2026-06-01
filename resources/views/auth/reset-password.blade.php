@@ -33,8 +33,7 @@
                         value="{{ old('email') }}"
                         class="w-full px-4 py-3 rounded-xl border border-[#d6c3b3]
           focus:outline-none focus:ring-2 focus:ring-[#6f4e37]
-          bg-[#fffdfb]"
-                        required>
+          bg-[#fffdfb]">
 
                     @error('email')
                         <p class="error text-red-500 text-sm mt-2 transition-opacity duration-500 opacity-100">
@@ -50,8 +49,7 @@
                     <input type="password" id="password" name="password" placeholder="********"
                         class="w-full px-4 py-3 rounded-xl border border-[#d6c3b3]
           focus:outline-none focus:ring-2 focus:ring-[#6f4e37]
-          bg-[#fffdfb]"
-                        required>
+          bg-[#fffdfb]">
 
                     @error('password')
                         <p class="error text-red-500 text-sm mt-2 transition-opacity duration-500 opacity-100">
@@ -68,8 +66,7 @@
                         placeholder="********"
                         class="w-full px-4 py-3 rounded-xl border border-[#d6c3b3]
           focus:outline-none focus:ring-2 focus:ring-[#6f4e37]
-          bg-[#fffdfb]"
-                        required>
+          bg-[#fffdfb]">
 
                     @error('password_confirmation')
                         <p class="error text-red-500 text-sm mt-2 transition-opacity duration-500 opacity-100">

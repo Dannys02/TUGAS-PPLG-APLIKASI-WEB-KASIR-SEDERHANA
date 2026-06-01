@@ -38,8 +38,7 @@
                     <input type="email" id="email" name="email" placeholder="Email Anda"
                         class="w-full px-4 py-3 rounded-xl border border-[#d6c3b3]
           focus:outline-none focus:ring-2 focus:ring-[#6f4e37]
-          bg-[#fffdfb]"
-                        required>
+          bg-[#fffdfb]" value="{{ old('email') }}">
 
                     @error('email')
                         <p class="error text-red-500 text-sm mt-2 transition-opacity duration-500 opacity-100">

@@ -88,6 +88,9 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email'
+        ], [
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.'
         ]);
 
         $user = \App\Models\User::where('email', $request->email)->first();
@@ -124,6 +127,15 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:8|confirmed',
             'token' => 'required'
+        ], [
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+
+            'password.required' => 'Password baru wajib diisi.',
+            'password.min' => 'Password minimal 8 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+
+            'token.required' => 'Token reset tidak valid.',
         ]);
 
         $reset = \DB::table('password_resets')
