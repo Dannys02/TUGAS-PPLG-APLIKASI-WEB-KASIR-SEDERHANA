@@ -13,7 +13,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-[#f8f5f2] min-h-screen flex flex-col space-y-4 items-center justify-center px-4">
+<body class="bg-gray-50 min-h-screen flex flex-col space-y-4 items-center justify-center px-4 font-sans text-gray-800 antialiased">
 
     @if (session('success'))
         <div id="alert" class="alert alert-success bg-green-600 mt-6">
@@ -22,9 +22,11 @@
     @endif
 
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div class="bg-[#6f4e37] py-8 px-6 text-center">
-            <h1 class="text-3xl font-bold text-white">Aplikasi Kasir</h1>
-            <p class="text-[#f3e9dc] mt-2 text-sm">
+        <div class="bg-blue-600 py-8 px-6 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-700 to-blue-500 opacity-90"></div>
+            <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-white opacity-10"></div>
+            <h1 class="text-3xl font-bold text-white relative z-10">Aplikasi Kasir</h1>
+            <p class="text-blue-100 mt-2 text-sm relative z-10">
                 Selamat datang kembali
             </p>
         </div>
@@ -33,13 +35,13 @@
             <form action="{{ route('login.store') }}" method="POST" class="space-y-5">
                 @csrf
                 <div>
-                    <label for="email" class="block mb-2 text-sm font-semibold text-[#5c4033]">
+                    <label for="email" class="block mb-2 text-sm font-semibold text-gray-700">
                         Email
                     </label>
                     <input type="email" id="email" name="email" placeholder="Email Anda"
-                        class="w-full px-4 py-3 rounded-xl border border-[#d6c3b3]
-          focus:outline-none focus:ring-2 focus:ring-[#6f4e37]
-          bg-[#fffdfb]">
+                        class="w-full px-4 py-3 rounded-xl border border-gray-300
+          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+          bg-gray-50 text-gray-900 transition-colors">
 
                     @error('email')
                         <p class="error text-red-500 text-sm mt-2 transition-opacity duration-500 opacity-100">
@@ -49,14 +51,14 @@
                 </div>
 
                 <div>
-                    <label for="password" class="block mb-2 text-sm font-semibold text-[#5c4033]">
+                    <label for="password" class="block mb-2 text-sm font-semibold text-gray-700">
                         Password
                     </label>
 
                     <input type="password" id="password" name="password" placeholder="********"
-                        class="w-full px-4 py-3 rounded-xl border border-[#d6c3b3]
-          focus:outline-none focus:ring-2 focus:ring-[#6f4e37]
-          bg-[#fffdfb]">
+                        class="w-full px-4 py-3 rounded-xl border border-gray-300
+          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+          bg-gray-50 text-gray-900 transition-colors">
 
                     @error('password')
                         <p class="error text-red-500 text-sm mt-2 transition-opacity duration-500 opacity-100">
@@ -65,22 +67,22 @@
                     @enderror
                 </div>
 
-                <p class="text-sm text-[#5c4033]">
+                <p class="text-sm text-gray-600">
                     Lupa password?
-                    <a href="{{ route('forgot-password') }}" class="text-[#6f4e37] font-semibold hover:underline">
+                    <a href="{{ route('forgot-password') }}" class="text-blue-600 font-semibold hover:text-blue-700 hover:underline">
                         Reset password
                     </a>
                 </p>
 
                 <button type="submit"
-                    class="w-full bg-[#6f4e37] hover:bg-[#5c4033]
-          text-white font-semibold py-3 rounded-xl transition duration-300">
+                    class="w-full bg-blue-600 hover:bg-blue-700
+          text-white font-semibold py-3 rounded-xl shadow-md transition duration-300 transform hover:-translate-y-0.5">
                     Login
                 </button>
                 <div>
-                    <p class="text-sm text-center text-[#5c4033]">
+                    <p class="text-sm text-center text-gray-600">
                         Belum punya akun?
-                        <a href="{{ route('register') }}" class="text-[#6f4e37] font-semibold hover:underline">
+                        <a href="{{ route('register') }}" class="text-blue-600 font-semibold hover:text-blue-700 hover:underline">
                             Daftar di sini
                         </a>
                     </p>

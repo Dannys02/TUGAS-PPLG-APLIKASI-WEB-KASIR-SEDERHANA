@@ -20,44 +20,53 @@
     <aside class="sidebar" id="sidebar">
         <div class="brand">
             @if ($globalUser && $globalUser->logo)
-                <img src="{{ asset('storage/logos/' . $globalUser->logo) }}" alt="Logo"
-                    style="height: 60px; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%;">
+                <img src="{{ asset('storage/logos/' . $globalUser->logo) }}" alt="Logo" class="brand-logo">
             @else
-                <div
-                    style="
-        height: 60px;
-        width: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        ">
-                    <i class="fa-solid fa-gear" style="font-size: 40px;"></i>
+                <div class="brand-logo-fallback">
+                    <i class="fa-solid fa-gear"></i>
                 </div>
             @endif
-            <span class="text-[16px] uppercase">{{ $globalUser->name ?? 'Kasir Kafe' }}</span>
+            <span class="brand-text">{{ $globalUser->name ?? 'Kasir Kafe' }}</span>
         </div>
+
         <ul class="nav-links">
-            <li><a href="{{ route('pos.index') }}" class="{{ request()->routeIs('pos.*') ? 'active' : '' }}"><i
-                        class="fa-solid fa-cash-register"></i> Kasir (POS)</a></li>
-            <li><a href="{{ route('menus.index') }}" class="{{ request()->routeIs('menus.*') ? 'active' : '' }}"><i
-                        class="fa-solid fa-utensils"></i> Manajemen Menu</a></li>
-            <li><a href="{{ route('categories.index') }}"
-                    class="{{ request()->routeIs('categories.*') ? 'active' : '' }}"><i class="fa-solid fa-tags"></i>
-                    Kategori</a></li>
-            <li><a href="{{ route('transactions.history') }}"
-                    class="{{ request()->routeIs('transactions.*') ? 'active' : '' }}"><i
-                        class="fa-solid fa-receipt"></i> Riwayat Transaksi</a></li>
-            <li><a href="{{ route('settings.edit') }}"
-                    class="{{ request()->routeIs('settings.*') ? 'active' : '' }}"><i class="fa-solid fa-gear"></i>
-                    Pengaturan</a></li>
-            <form action="{{ route('logout') }}" method="POST" style="margin-top: 2rem;">
+            <li>
+                <a href="{{ route('pos.index') }}" class="{{ request()->routeIs('pos.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-cash-register"></i> <span>Kasir (POS)</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('menus.index') }}" class="{{ request()->routeIs('menus.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-utensils"></i> <span>Manajemen Menu</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('categories.index') }}"
+                    class="{{ request()->routeIs('categories.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-tags"></i> <span>Kategori</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('transactions.history') }}"
+                    class="{{ request()->routeIs('transactions.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-receipt"></i> <span>Riwayat Transaksi</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('settings.edit') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-gear"></i> <span>Pengaturan</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button id="logoutButton" type="submit" class="logout-button"><i class="fa-solid fa-sign-out-alt"></i>
-                    Logout
+                <button id="logoutButton" type="submit" class="logout-button">
+                    <i class="fa-solid fa-sign-out-alt"></i> <span>Logout</span>
                 </button>
             </form>
-        </ul>
+        </div>
     </aside>
 
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
