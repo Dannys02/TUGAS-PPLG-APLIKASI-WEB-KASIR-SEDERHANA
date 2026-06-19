@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Register | Aplikasi Kasir</title>
+    @if ($globalUser && $globalUser->logo && file_exists(storage_path('app/public/logos/' . $globalUser->logo)))
+        <link rel="icon" href="{{ asset('storage/logos/' . $globalUser->logo) }}">
+    @else
+        <link rel="icon" href="{{ asset('Logo.png') }}">
+    @endif
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 

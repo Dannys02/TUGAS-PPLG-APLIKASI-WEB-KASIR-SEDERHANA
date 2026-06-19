@@ -7,7 +7,7 @@
     @if ($globalUser && $globalUser->logo && file_exists(storage_path('app/public/logos/' . $globalUser->logo)))
         <link rel="icon" href="{{ asset('storage/logos/' . $globalUser->logo) }}">
     @else
-        <link rel="icon" href="{{ asset('Logo.jpeg') }}">
+        <link rel="icon" href="{{ asset('Logo.png') }}">
     @endif
     <title>Dashboard | Aplikasi Kasir</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
