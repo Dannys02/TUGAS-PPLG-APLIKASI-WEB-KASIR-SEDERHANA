@@ -9,12 +9,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="min-h-screen py-12 flex items-center justify-center px-4">
+<body class="bg-gray-50 min-h-screen flex flex-col space-y-4 items-center justify-center px-4 font-sans text-gray-800 antialiased">
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
         <div class="bg-blue-600 py-8 px-6 text-center relative overflow-hidden">
 
             <div class="absolute inset-0 bg-gradient-to-br from-blue-700 to-blue-500 opacity-90"></div>
-
             <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-white opacity-10"></div>
 
             <h1 class="text-3xl font-bold text-white relative z-10">Daftar Akun</h1>

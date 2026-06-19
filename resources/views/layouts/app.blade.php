@@ -4,94 +4,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{{ asset('Logo.png') }}" type="image/png">
-    <title>Admin {{ $globalUser->name }} | Aplikasi Kasir</title>
+    @if ($globalUser && $globalUser->logo && file_exists(storage_path('app/public/logos/' . $globalUser->logo)))
+        <link rel="icon" href="{{ asset('storage/logos/' . $globalUser->logo) }}">
+    @else
+        <link rel="icon" href="{{ asset('Logo.jpeg') }}">
+    @endif
+    <title>Dashboard | Aplikasi Kasir</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
-
     <button class="hamburger-toggle" id="hamburgerToggle">
         <i class="fa-solid fa-bars"></i>
     </button>
 
     <aside class="sidebar closed" id="sidebar">
-    <!-- Brand / Header Sidebar -->
-    <div class="brand">
-        @if ($globalUser && $globalUser->logo)
-            <img src="{{ asset('storage/logos/' . $globalUser->logo) }}" alt="Logo" class="brand-logo">
-        @else
-            <div class="brand-logo-fallback">
-                <i class="fa-solid fa-store"></i>
+        <!-- Brand / Header Sidebar -->
+        <div class="brand">
+            @if ($globalUser && $globalUser->logo)
+                <img src="{{ asset('storage/logos/' . $globalUser->logo) }}" alt="Logo" class="brand-logo">
+            @else
+                <div class="brand-logo-fallback">
+                    <i class="fa-solid fa-store"></i>
+                </div>
+            @endif
+            <div class="brand-details">
+                <span class="brand-text">{{ $globalUser->name ?? 'Kasir Kafe' }}</span>
+                <span class="brand-badge"><i class="fa-solid fa-circle text-xs text-emerald-400 mr-1 animate-pulse"></i>
+                    Online</span>
             </div>
-        @endif
-        <div class="brand-details">
-            <span class="brand-text">{{ $globalUser->name ?? 'Kasir Kafe' }}</span>
-            <span class="brand-badge"><i class="fa-solid fa-circle text-xs text-emerald-400 mr-1 animate-pulse"></i> UMKM Aktif</span>
-        </div>
-    </div>
-
-    <!-- Navigasi Menu -->
-    <div class="nav-container">
-        <!-- Kelompok Utama -->
-        <div class="menu-group">
-            <span class="menu-group-title">Menu Utama</span>
-            <ul class="nav-links">
-                <li>
-                    <a href="{{ route('pos.index') }}" class="{{ request()->routeIs('pos.*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-cash-register"></i> <span>Kasir (POS)</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('transactions.history') }}" class="{{ request()->routeIs('transactions.*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-receipt"></i> <span>Riwayat Transaksi</span>
-                    </a>
-                </li>
-            </ul>
         </div>
 
-        <!-- Kelompok Manajemen -->
-        <div class="menu-group">
-            <span class="menu-group-title">Manajemen Data</span>
-            <ul class="nav-links">
-                <li>
-                    <a href="{{ route('menus.index') }}" class="{{ request()->routeIs('menus.*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-utensils"></i> <span>Daftar Menu</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('categories.index') }}" class="{{ request()->routeIs('categories.*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-tags"></i> <span>Kategori Produk</span>
-                    </a>
-                </li>
-            </ul>
+        <!-- Navigasi Menu -->
+        <div class="nav-container">
+            <!-- Kelompok Utama -->
+            <div class="menu-group">
+                <span class="menu-group-title">Menu Utama</span>
+                <ul class="nav-links">
+                    <li>
+                        <a href="{{ route('pos.index') }}" class="{{ request()->routeIs('pos.*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-cash-register"></i> <span>Kasir (POS)</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('transactions.history') }}"
+                            class="{{ request()->routeIs('transactions.*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-receipt"></i> <span>Riwayat Transaksi</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Kelompok Manajemen -->
+            <div class="menu-group">
+                <span class="menu-group-title">Manajemen Data</span>
+                <ul class="nav-links">
+                    <li>
+                        <a href="{{ route('menus.index') }}"
+                            class="{{ request()->routeIs('menus.*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-utensils"></i> <span>Daftar Menu</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('categories.index') }}"
+                            class="{{ request()->routeIs('categories.*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-tags"></i> <span>Kategori Produk</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Kelompok Lainnya -->
+            <div class="menu-group">
+                <span class="menu-group-title">Sistem</span>
+                <ul class="nav-links">
+                    <li>
+                        <a href="{{ route('settings.edit') }}"
+                            class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
+                            <i class="fa-solid fa-sliders"></i> <span>Pengaturan Toko</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
 
-        <!-- Kelompok Lainnya -->
-        <div class="menu-group">
-            <span class="menu-group-title">Sistem</span>
-            <ul class="nav-links">
-                <li>
-                    <a href="{{ route('settings.edit') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-sliders"></i> <span>Pengaturan Toko</span>
-                    </a>
-                </li>
-            </ul>
+        <!-- Footer Sidebar -->
+        <div class="sidebar-footer">
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button id="logoutButton" type="submit" class="logout-button">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Keluar Aplikasi</span>
+                </button>
+            </form>
         </div>
-    </div>
-
-    <!-- Footer Sidebar -->
-    <div class="sidebar-footer">
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button id="logoutButton" type="submit" class="logout-button">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Keluar Aplikasi</span>
-            </button>
-        </form>
-    </div>
-</aside>
+    </aside>
 
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -170,7 +178,11 @@
         });
 
         // --- ENGINE MODAL SESSION (Tema Putih-Biru) ---
-        function showSessionModal({ title, message, type = 'success' }) {
+        function showSessionModal({
+            title,
+            message,
+            type = 'success'
+        }) {
             const modal = document.getElementById('session-modal');
             const modalBox = modal.querySelector('div.max-w-sm');
             const modalTitle = document.getElementById('session-modal-title');

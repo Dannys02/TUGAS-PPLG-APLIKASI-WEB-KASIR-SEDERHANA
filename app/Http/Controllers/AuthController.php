@@ -112,8 +112,9 @@ class AuthController extends Controller
             ]
         );
 
-        // sementara tampilkan link (tanpa email dulu)
-        return back()->with('success', 'Berhasil. Silakan salin dan buka URL berikut: ' . url('/reset-password/' . $token));
+        // Sementara tampilkan link (tanpa email dulu)
+        $resetUrl = url('/auth/admin/user/reset-password/' . $token);
+        return back()->with('success', 'Link reset password berhasil dibuat! Gunakan link di bawah untuk mereset password Anda.')->with('reset_url', $resetUrl);
     }
 
     public function showReset($token)

@@ -81,15 +81,15 @@ Route::middleware(['auth'])->group(function () {
 
 // Auth routes
 Route::middleware(['guest'])->group(function () {
-    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/register', [AuthController::class, 'register'])->name('register.store');
+    Route::get('/create/auth/admin/user/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/create/auth/admin/user/register', [AuthController::class, 'register'])->name('register.store');
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.store');
 });
 
 // Password reset routes
-Route::get('/forgot-password', [AuthController::class, 'showForgot'])->name('forgot-password');
-Route::post('/forgot-password', [AuthController::class, 'sendReset'])->name('forgot-password.send');
+Route::get('/auth/admin/user/forgot-password', [AuthController::class, 'showForgot'])->name('forgot-password');
+Route::post('/auth/admin/user/forgot-password', [AuthController::class, 'sendReset'])->name('forgot-password.send');
 
-Route::get('/reset-password/{token}', [AuthController::class, 'showReset'])->name('password.reset');
-Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+Route::get('/auth/admin/user/reset-password/{token}', [AuthController::class, 'showReset'])->name('password.reset');
+Route::post('/auth/admin/user/reset-password/{token}', [AuthController::class, 'resetPassword'])->name('password.update');
