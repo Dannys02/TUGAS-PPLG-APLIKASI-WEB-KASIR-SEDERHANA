@@ -8,12 +8,11 @@
     <title>Login | Aplikasi Kasir</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
-
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-50 min-h-screen flex flex-col space-y-4 items-center justify-center px-4 font-sans text-gray-800 antialiased">
+<body
+    class="bg-gray-50 min-h-screen flex flex-col space-y-4 items-center justify-center px-4 font-sans text-gray-800 antialiased">
 
     {{-- Modal Notifikasi Session --}}
     <div id="session-modal"
@@ -85,7 +84,8 @@
 
                 <p class="text-sm text-gray-600">
                     Lupa password?
-                    <a href="{{ route('forgot-password') }}" class="text-blue-600 font-semibold hover:text-blue-700 hover:underline">
+                    <a href="{{ route('forgot-password') }}"
+                        class="text-blue-600 font-semibold hover:text-blue-700 hover:underline">
                         Reset password
                     </a>
                 </p>
@@ -98,7 +98,8 @@
                 <div>
                     <p class="text-sm text-center text-gray-600">
                         Belum punya akun?
-                        <a href="{{ route('register') }}" class="text-blue-600 font-semibold hover:text-blue-700 hover:underline">
+                        <a href="{{ route('register') }}"
+                            class="text-blue-600 font-semibold hover:text-blue-700 hover:underline">
                             Daftar di sini
                         </a>
                     </p>
@@ -109,7 +110,11 @@
 
     <script>
         // --- ENGINE MODAL SESSION (Tema Putih-Biru) ---
-        function showSessionModal({ title, message, type = 'success' }) {
+        function showSessionModal({
+            title,
+            message,
+            type = 'success'
+        }) {
             const modal = document.getElementById('session-modal');
             const modalBox = modal.querySelector('div.max-w-sm');
             const modalTitle = document.getElementById('session-modal-title');

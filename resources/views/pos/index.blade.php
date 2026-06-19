@@ -51,15 +51,15 @@
                         onclick="addToCart({{ $m->id }}, '{{ addslashes($m->nama_menu) }}', {{ $m->harga }}, {{ $m->stok }}, '{{ addslashes($m->category->nama_kategori) }}')">
 
                         <div>
-                            <div class="flex items-start justify-between gap-2 mb-2">
-                                <h3 class="font-bold text-slate-700 text-sm md:text-base leading-snug group-hover:text-blue-600 transition-colors truncate max-w-[130px] sm:max-w-none"
+                            <div class="flex flex-col gap-2">
+                                <span
+                                    class="w-fit px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100/50 uppercase tracking-wide shrink-0">
+                                    {{ $m->category->nama_kategori ?? 'Umum' }}
+                                </span>
+                                <h3 class="font-bold text-slate-700 text-sm md:text-base leading-snug group-hover:text-blue-600 transition-colors "
                                     title="{{ $m->nama_menu }}">
                                     {{ $m->nama_menu }}
                                 </h3>
-                                <span
-                                    class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100/50 uppercase tracking-wide shrink-0">
-                                    {{ $m->category->nama_kategori ?? 'Umum' }}
-                                </span>
                             </div>
 
                             <div class="text-slate-800 font-extrabold text-lg md:text-xl tracking-tight mb-4">
