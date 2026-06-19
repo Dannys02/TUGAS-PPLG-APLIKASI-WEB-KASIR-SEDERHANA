@@ -1,157 +1,190 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="header-title"><i class="fa-solid fa-gear"></i> Pengaturan Profil</h1>
+    <!-- Header Section -->
+    <div class="flex items-center gap-3 mb-8">
+        <div class="flex items-center justify-center w-12 h-12 rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
+            <i class="fa-solid fa-sliders text-xl"></i>
+        </div>
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Pengaturan Toko</h1>
+            <p class="text-sm text-slate-500">Kelola informasi profil bisnis dan keamanan akun UMKM Anda</p>
+        </div>
+    </div>
 
-    <div class="card">
-        <form action="{{ route('settings.update') }}" method="POST" enctype="multipart/form-data">
+    <!-- Main Card Settings -->
+    <div class="p-6 sm:p-8 bg-white border border-slate-200 rounded-2xl shadow-sm">
+        <form action="{{ route('settings.update') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
             @csrf
 
-            <!-- Logo Section -->
-            <div style="margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border-color);">
-                <label style="display: block; margin-bottom: 1rem; font-weight: 600; color: var(--primary-dark);">
-                    <i class="fa-solid fa-image"></i> Logo Bisnis
-                </label>
-                <div style="display: flex; gap: 2rem; align-items: flex-start;">
-                    <div style="flex: 0 0 auto;">
-                        <div
-                            style="width: 150px; height: 150px; border-radius: 12px; background: var(--bg-color); display: flex; align-items: center; justify-content: center; border: 2px dashed var(--border-color); position: relative; overflow: hidden;">
+            <!-- SECTION 1: Logo Bisnis -->
+            <div class="pb-8 border-b border-slate-100">
+                <h3 class="text-base font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-image text-blue-500"></i> Logo Bisnis
+                </h3>
+
+                <div class="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+                    <!-- Preview Box -->
+                    <div class="flex-shrink-0">
+                        <div id="logoPreviewContainer" class="w-32 h-32 rounded-2xl bg-slate-50 flex items-center justify-center border-2 border-dashed border-slate-200 relative overflow-hidden transition-all duration-300 hover:border-blue-400 group">
                             @if ($user->logo)
-                                <img src="{{ asset('storage/logos/' . $user->logo) }}" alt="Logo"
-                                    style="max-width: 100%; max-height: 100%; object-fit: cover;">
+                                <img src="{{ asset('storage/logos/' . $user->logo) }}" alt="Logo" class="w-full h-full object-cover">
                             @else
-                                <div style="text-align: center; color: var(--text-muted);">
-                                    <i class="fa-solid fa-image"
-                                        style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>
-                                    <small>Belum ada logo</small>
+                                <div class="text-center p-3 text-slate-400 group-hover:text-blue-500 transition-colors">
+                                    <i class="fa-solid fa-store text-3xl block mb-2"></i>
+                                    <span class="text-xs font-medium block">Belum ada logo</span>
                                 </div>
                             @endif
                         </div>
                     </div>
-                    <div style="flex: 1;">
-                        <input type="file" name="logo" id="logo" class="form-control" accept="image/*"
-                            style="margin-bottom: 1rem;">
-                        <small style="color: var(--text-muted);">
-                            <i class="fa-solid fa-info-circle"></i> Format: JPEG, PNG, JPG, GIF (Maksimal 2MB)
-                        </small>
+
+                    <!-- Upload Input Control -->
+                    <div class="flex-1 w-full space-y-2">
+                        <label for="logo" class="block text-sm font-medium text-slate-700">Pilih File Logo Baru</label>
+                        <input type="file" name="logo" id="logo" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border border-slate-200 rounded-xl p-1 bg-slate-50" accept="image/*">
+                        <p class="text-xs text-slate-400 flex items-center gap-1.5 pt-1">
+                            <i class="fa-solid fa-circle-info text-blue-500"></i> Format: JPEG, PNG, JPG, GIF (Maksimal 2MB)
+                        </p>
                         @error('logo')
-                            <br><span class="text-red-600"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</span>
+                            <span class="text-xs font-medium text-red-500 flex items-center gap-1.5 mt-1">
+                                <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
+                            </span>
                         @enderror
                     </div>
                 </div>
             </div>
 
-            <!-- Profile Information -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
-                <div class="form-group">
-                    <label><i class="fa-solid fa-user"></i> Nama Lengkap</label>
-                    <input type="text" name="name" class="form-control" required placeholder="Nama pemilik bisnis"
-                        value="{{ old('name', $user->name) }}">
-                    @error('name')
-                        <span class="text-red-600"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</span>
-                    @enderror
-                </div>
+            <!-- SECTION 2: Informasi Profil -->
+            <div class="pb-8 border-b border-slate-100">
+                <h3 class="text-base font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-id-card text-blue-500"></i> Informasi Profil
+                </h3>
 
-                <div class="form-group">
-                    <label><i class="fa-solid fa-envelope"></i> Email</label>
-                    <input type="email" name="email" class="form-control" required placeholder="email@bisnis.com"
-                        value="{{ old('email', $user->email) }}">
-                    @error('email')
-                        <span class="text-red-600"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</span>
-                    @enderror
-                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-slate-700">
+                            <i class="fa-solid fa-user text-slate-400 mr-1.5"></i> Nama Lengkap / Bisnis
+                        </label>
+                        <input type="text" name="name" class="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-800 text-sm focus:outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition-all" required placeholder="Nama pemilik bisnis / kafe" value="{{ old('name', $user->name) }}">
+                        @error('name')
+                            <span class="text-xs font-medium text-red-500 flex items-center gap-1.5 mt-1">
+                                <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
+                            </span>
+                        @enderror
+                    </div>
 
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-slate-700">
+                            <i class="fa-solid fa-envelope text-slate-400 mr-1.5"></i> Alamat Email
+                        </label>
+                        <input type="email" name="email" class="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-800 text-sm focus:outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition-all" required placeholder="email@bisnis.com" value="{{ old('email', $user->email) }}">
+                        @error('email')
+                            <span class="text-xs font-medium text-red-500 flex items-center gap-1.5 mt-1">
+                                <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
+                            </span>
+                        @enderror
+                    </div>
+                </div>
             </div>
 
-            <!-- Password Section -->
-            <div
-                style="padding: 1.5rem; background: rgba(111, 78, 55, 0.05); border-radius: 12px; margin-bottom: 2rem; border-left: 4px solid var(--primary-color);">
-                <h3 style="color: var(--primary-dark); margin-bottom: 1rem; font-size: 1rem;">
-                    <i class="fa-solid fa-lock"></i> Ubah Password
-                </h3>
-                <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
-                    Kosongkan jika tidak ingin mengubah password
-                </p>
+            <!-- SECTION 3: Kredensial Keamanan -->
+            <div class="p-5 sm:p-6 bg-slate-50 border border-slate-200 rounded-2xl">
+                <div class="mb-4">
+                    <h3 class="text-base font-semibold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-blue-500"></i> Perbarui Kata Sandi
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-1">Biarkan kosong jika Anda tidak ingin mengubah password lama Anda</p>
+                </div>
 
-                <div class="form-group">
-                    <label for="current_password">
-                        <i class="fas fa-key"></i> Password Saat Ini
+                <!-- Input Password Saat Ini -->
+                <div class="space-y-2 max-w-md mb-5">
+                    <label for="current_password" class="block text-sm font-medium text-slate-700">
+                        <i class="fa-solid fa-key text-slate-400 mr-1.5"></i> Password Saat Ini
                     </label>
-                    <div class="flex items-center gap-2">
-                        <input class="form-control" type="password" id="current_password" name="current_password"
-                            placeholder="Masukkan password saat ini">
-                        <button type="button" onclick="togglePassword('current_password')">
-                            <i class="fas fa-eye"></i>
+                    <div class="relative flex items-center">
+                        <input type="password" id="current_password" name="current_password" placeholder="Masukkan sandi saat ini" class="w-full pl-4 pr-12 py-3 border border-slate-200 rounded-xl bg-white text-slate-800 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all">
+                        <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg text-slate-400 hover:bg-slate-100 transition-colors" onclick="togglePassword('current_password', this)">
+                            <i class="fa-solid fa-eye"></i>
                         </button>
                     </div>
                     @error('current_password')
-                        <p class="text-red-600">
-                            <i class="fas fa-exclamation-circle"></i> {{ $message }}
+                        <p class="text-xs font-medium text-red-500 flex items-center gap-1.5 mt-1">
+                            <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
                         </p>
                     @enderror
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                    <div class="form-group">
-                        <label><i class="fa-solid fa-lock"></i> Password Baru</label>
-                        <input type="password" name="password" class="form-control" placeholder="Minimal 8 karakter">
+                <!-- Input Password Baru & Konfirmasi -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-slate-700">
+                            <i class="fa-solid fa-lock text-slate-400 mr-1.5"></i> Kata Sandi Baru
+                        </label>
+                        <input type="password" name="password" class="w-full px-4 py-3 border border-slate-200 rounded-xl bg-white text-slate-800 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all" placeholder="Minimal 8 karakter baru">
                         @error('password')
-                            <span class="text-red-600"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</span>
+                            <span class="text-xs font-medium text-red-500 flex items-center gap-1.5 mt-1">
+                                <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
+                            </span>
                         @enderror
                     </div>
 
-                    <div class="form-group">
-                        <label><i class="fa-solid fa-lock"></i> Konfirmasi Password</label>
-                        <input type="password" name="password_confirmation" class="form-control"
-                            placeholder="Ulangi password">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-slate-700">
+                            <i class="fa-solid fa-lock text-slate-400 mr-1.5"></i> Konfirmasi Kata Sandi Baru
+                        </label>
+                        <input type="password" name="password_confirmation" class="w-full px-4 py-3 border border-slate-200 rounded-xl bg-white text-slate-800 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all" placeholder="Ulangi sandi baru">
                         @error('password_confirmation')
-                            <span class="text-red-600"><i class="fa-solid fa-circle-exclamation"></i> {{ $message }}</span>
+                            <span class="text-xs font-medium text-red-500 flex items-center gap-1.5 mt-1">
+                                <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
+                            </span>
                         @enderror
                     </div>
                 </div>
             </div>
 
-            <!-- Form Actions -->
-            <div style="display: flex; gap: 1rem;">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fa-solid fa-check"></i> Simpan Perubahan
-                </button>
-                <a href="{{ route('pos.index') }}" class="btn btn-secondary">
-                    <i class="fa-solid fa-times"></i> Batal
+            <!-- SECTION 4: Tombol Aksi / Submit -->
+            <div class="flex flex-col sm:flex-row gap-3 pt-4 justify-end">
+                <a href="{{ route('pos.index') }}" class="w-full sm:w-auto order-2 sm:order-1 flex items-center justify-center gap-2 px-5 py-3 border border-slate-200 text-slate-600 bg-white hover:bg-slate-50 font-semibold text-sm rounded-xl transition-colors">
+                    <i class="fa-solid chimneys-left text-sm"></i> Kembali ke Kasir
                 </a>
+                <button type="submit" class="w-full sm:w-auto order-1 sm:order-2 flex items-center justify-center gap-2 px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 font-semibold text-sm rounded-xl shadow-sm shadow-blue-500/10 transition-colors">
+                    <i class="fa-solid fa-floppy-disk text-sm"></i> Simpan Konfigurasi
+                </button>
             </div>
         </form>
     </div>
 
     @push('scripts')
         <script>
-            // Preview logo image
+            // Live Image Preview Logo Bisnis
             const logoInput = document.getElementById('logo');
             logoInput.addEventListener('change', function (e) {
                 const file = e.target.files[0];
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = function (event) {
-                        const preview = document.querySelector('[style*="width: 150px"]');
-                        preview.innerHTML = '<img src="' + event.target.result + '" alt="Logo Preview" style="max-width: 100%; max-height: 100%; object-fit: cover;">';
+                        const previewContainer = document.getElementById('logoPreviewContainer');
+                        previewContainer.innerHTML = '<img src="' + event.target.result + '" alt="Logo Preview" class="w-full h-full object-cover opacity-0 transition-opacity duration-300" id="previewImg">';
+                        setTimeout(() => {
+                            document.getElementById('previewImg').classList.remove('opacity-0');
+                        }, 50);
                     };
                     reader.readAsDataURL(file);
                 }
             });
 
-            // show now password
-            function togglePassword(fieldId) {
+            // Modern Visibility Toggle Password Field
+            function togglePassword(fieldId, element) {
                 const field = document.getElementById(fieldId);
-                const button = event.target.closest('button');
-                const icon = button.querySelector('i');
+                const icon = element.querySelector('i');
 
                 if (field.type === 'password') {
                     field.type = 'text';
                     icon.classList.remove('fa-eye');
-                    icon.classList.add('fa-eye-slash');
+                    icon.classList.add('fa-eye-slash', 'text-blue-500');
                 } else {
                     field.type = 'password';
-                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.remove('fa-eye-slash', 'text-blue-500');
                     icon.classList.add('fa-eye');
                 }
             }
