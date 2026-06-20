@@ -92,7 +92,7 @@
                         <thead>
                             <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-600 uppercase tracking-wider">
                                 <th class="py-3.5 px-6 text-center w-20">No</th>
-                                <th class="py-3.5 px-6">Nama Kategori Produk</th>
+                                <th class="py-3.5 px-6">Nama Kategori</th>
                                 <th class="py-3.5 px-6 text-center w-32">Aksi</th>
                             </tr>
                         </thead>

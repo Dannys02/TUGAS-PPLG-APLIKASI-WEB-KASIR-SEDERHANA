@@ -102,7 +102,7 @@ class TransactionController extends Controller
       $year)
     ->orderBy('created_at',
       'desc')
-    ->get();
+    ->paginate(30);
 
     // Hitung statistik berdasarkan filter yang dipilih
     $totalOmzet = $this->calculateTotalOmzet($month,

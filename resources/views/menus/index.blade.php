@@ -136,10 +136,10 @@
                 <thead>
                     <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-600 uppercase tracking-wider">
                         <th class="py-3.5 px-6 text-center w-20">No</th>
-                        <th class="py-3.5 px-6">Nama Item Menu</th>
+                        <th class="py-3.5 px-6">Nama Menu</th>
                         <th class="py-3.5 px-6">Kategori</th>
-                        <th class="py-3.5 px-6">Harga Satuan</th>
-                        <th class="py-3.5 px-6 text-center w-36">Jumlah Stok</th>
+                        <th class="py-3.5 px-6">Harga</th>
+                        <th class="py-3.5 px-6 text-center w-36">Stok</th>
                         <th class="py-3.5 px-6 text-center w-32">Aksi</th>
                     </tr>
                 </thead>
@@ -205,9 +205,11 @@
             </table>
         </div>
 
-        @if($menus->hasPages())
-            <div class="p-4 border-t border-slate-100 bg-slate-50/30">
-                {{ $menus->links() }}
+        @if ($menus->hasPages())
+            <div class="p-4 border-t border-slate-100 bg-slate-50/30 overflow-x-auto">
+                <div class="flex justify-center">
+                    {{ $menus->onEachSide(0)->links() }}
+                </div>
             </div>
         @endif
     </div>

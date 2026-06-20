@@ -209,5 +209,13 @@
                 </tbody>
             </table>
         </div>
+        
+        @if ($transactions->hasPages())
+            <div class="p-4 border-t border-slate-100 bg-slate-50/30 overflow-x-auto">
+                <div class="flex justify-center">
+                    {{ $transactions->onEachSide(0)->links() }}
+                </div>
+            </div>
+        @endif
     </div>
 @endsection
