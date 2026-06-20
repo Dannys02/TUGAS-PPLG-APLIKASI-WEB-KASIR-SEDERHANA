@@ -202,7 +202,7 @@
 /* Footer Section & Logout */
 .sidebar-footer {
     margin-top: auto;
-    padding-bottom: 8rem;
+    padding-bottom: 2rem;
     border-top: 1px solid var(--sb-border);
 }
 
@@ -702,7 +702,7 @@ input[type="number"] {
         width: var(--sb-width);
         box-shadow: 5px 0 30px rgba(0, 0, 0, 0.25);
     }
-    
+
     .sidebar-footer {
       padding-bottom: 4rem;
     }
@@ -766,7 +766,7 @@ input[type="number"] {
     .qty-input {
         width: 100%;
     }
-    
+
     .sidebar-footer {
       padding-bottom: 2rem;
     }
@@ -890,9 +890,9 @@ input[type="number"] {
     #filterForm label {
         font-size: 0.85rem;
     }
-    
+
     .sidebar-footer {
-      padding-bottom: 6rem;
+      padding-bottom: 0.5rem;
     }
 }
 

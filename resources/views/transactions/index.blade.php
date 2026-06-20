@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
         <div
             class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex items-center justify-between transition-transform hover:-translate-y-1 duration-300 group">
             <div>
@@ -169,7 +169,7 @@
                                     class="text-xs font-normal text-slate-400 mr-0.5">Rp</span>{{ number_format($t->total, 0, ',', '.') }}
                             </td>
                             <td class="py-4 px-6">
-                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-2xl">
+                                <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 max-w-2xl">
                                     @foreach ($t->details as $detail)
                                         <div
                                             class="flex flex-col lg:flex-row text-xs bg-slate-50 border border-slate-200/60 p-2.5 rounded-xl transition-all hover:bg-white hover:shadow-sm">
@@ -209,7 +209,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         @if ($transactions->hasPages())
             <div class="p-4 border-t border-slate-100 bg-slate-50/30 overflow-x-auto">
                 <div class="flex justify-center">
