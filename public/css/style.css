@@ -22,7 +22,7 @@
     display: none;
     position: fixed;
     top: 1rem;
-    left: 1rem;
+    right: 1rem;
     z-index: 1001;
     background: var(--sb-bg);
     border-radius: 8px;
@@ -30,7 +30,7 @@
     color: var(--sb-text-main);
     font-size: 1.25rem;
     cursor: pointer;
-    padding: 0.6rem 0.9rem;
+    padding: 0.3rem 0.6rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     transition: all 0.2s ease;
 }
@@ -202,7 +202,7 @@
 /* Footer Section & Logout */
 .sidebar-footer {
     margin-top: auto;
-    padding-top: 1rem;
+    padding-bottom: 8rem;
     border-top: 1px solid var(--sb-border);
 }
 
@@ -702,6 +702,10 @@ input[type="number"] {
         width: var(--sb-width);
         box-shadow: 5px 0 30px rgba(0, 0, 0, 0.25);
     }
+    
+    .sidebar-footer {
+      padding-bottom: 4rem;
+    }
 
     /* Status Tertutup di Mobile */
     .sidebar.closed {
@@ -761,6 +765,10 @@ input[type="number"] {
 
     .qty-input {
         width: 100%;
+    }
+    
+    .sidebar-footer {
+      padding-bottom: 2rem;
     }
 }
 
@@ -881,6 +889,10 @@ input[type="number"] {
 
     #filterForm label {
         font-size: 0.85rem;
+    }
+    
+    .sidebar-footer {
+      padding-bottom: 6rem;
     }
 }
 
