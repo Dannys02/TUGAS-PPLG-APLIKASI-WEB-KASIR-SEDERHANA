@@ -19,15 +19,22 @@ class TransactionController extends Controller
             ->with('category')
             ->where('stok', '>', 0);
 
-        // Jika ada input pencarian, tambahkan kondisi WHERE 'like' ke dalam query
+        // Jika ada input pencarian, tambahkan kondisi WHERE pencarian
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->where('nama_menu', 'like', "%{$search}%");
+
+            // Bungkus dengan kurung fungsi agar filter user_id dan stok tidak tertembus oleh OR
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_menu', 'like', "%{$search}%")
+                    ->orWhereHas('category', function ($qCategory) use ($search) {
+                        // Mencari kecocokan di tabel categories pada kolom nama_kategori
+                        $qCategory->where('nama_kategori', 'like', "%{$search}%");
+                    });
+            });
         }
 
         // Eksekusi query ke database di paling akhir
-        $menus = $query->get();
-
+        $menus = $query->get(); 
         return view('pos.index', compact('menus'));
     }
 
@@ -52,10 +59,14 @@ class TransactionController extends Controller
                     'user_id' => auth()->user()->id
                 ]);
 
-                // OPTIMASI: Ambil semua data menu yang ada di keranjang dalam 1x query
+                // Ambil semua data menu yang ada di keranjang dalam 1x query
                 $cartIds = collect($request->cart)->pluck('id');
                 // lockForUpdate() mencegah race condition jika ada kasir lain yang memproses menu yang sama
-                $menus = Menu::whereIn('id', $cartIds)->lockForUpdate()->get()->keyBy('id');
+                $menus = Menu::whereIn('id', $cartIds)
+                    ->orderBy('id')
+                    ->lockForUpdate()
+                    ->get()
+                    ->keyBy('id');
 
                 $detailTransactions = [];
 

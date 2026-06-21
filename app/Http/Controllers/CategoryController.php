@@ -84,11 +84,7 @@ class CategoryController extends Controller
             abort(403, 'Unauthorised');
         }
 
-        try {
-            $category->delete();
-            return back()->with('success', 'Kategori berhasil dihapus');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Kategori masih digunakan oleh menu!');
-        }
+        $category->delete();
+        return back()->with('success', 'Kategori berhasil dihapus.');
     }
 }

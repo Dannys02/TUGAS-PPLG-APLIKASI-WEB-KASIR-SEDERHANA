@@ -156,7 +156,7 @@
                 Keterangan info sistem kasir...
             </p>
             <div id="modal-actions" class="flex justify-center gap-2.5 w-full">
-                <button id="modal-btn-cancel"
+                <button id="modal-btn-cancel" onclick="closeModal()"
                     class="hidden flex-1 px-4 py-3 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 border border-slate-200/40 rounded-xl transition-colors">
                     Batal
                 </button>
@@ -189,57 +189,85 @@
         let cart = {};
         let blockCheckout = false;
         let isProcessing = false;
+        let modalTimer;
 
         // --- ENGINE MODAL CUSTOM ---
         function showModal({
             title,
             message,
-            type = 'info',
+            type = 'info', // 'info', 'loading', 'success', 'error'
             showCancel = false,
             onConfirm = null
         }) {
+            clearTimeout(modalTimer);
+
             const modal = document.getElementById('custom-modal');
             const modalBox = modal.querySelector('div.max-w-sm');
+
+            // Ambil elemen internal modal (sesuaikan ID/Class ini dengan elemen HTML modal Anda)
             const modalTitle = document.getElementById('modal-title');
             const modalMessage = document.getElementById('modal-message');
             const modalIconContainer = document.getElementById('modal-icon-container');
-            const modalIcon = document.getElementById('modal-icon');
-            const btnOk = document.getElementById('modal-btn-ok');
             const btnCancel = document.getElementById('modal-btn-cancel');
+            const btnOk = document.getElementById('modal-btn-ok');
 
-            // Reset Classes & Dynamic Styling
-            modalIconContainer.className = "mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full";
-            btnOk.className = "flex-1 px-5 py-2.5 text-sm font-bold text-white rounded-xl shadow-sm transition-colors";
+            // Atur Konten Teks
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
 
-            if (type === 'error') {
-                modalIconContainer.classList.add('bg-red-100', 'text-red-600');
-                modalIcon.className = "fa-solid fa-circle-xmark text-2xl";
-                btnOk.classList.add('bg-red-600', 'hover:bg-red-700');
+            // Atur Ikon & Warna Berdasarkan Type
+            let iconHtml = '';
+            if (type === 'loading') {
+                // Ikon Spinner Berputar (FontAwesome)
+                iconHtml = `<div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-2xl animate-spin">
+                        <i class="fa-solid fa-spinner"></i>
+                    </div>`;
+                btnOk.classList.add('hidden'); // Sembunyikan tombol OK saat loading
             } else if (type === 'success') {
-                modalIconContainer.classList.add('bg-green-100', 'text-green-600');
-                modalIcon.className = "fa-solid fa-circle-check text-2xl";
-                btnOk.classList.add('bg-green-600', 'hover:bg-green-700');
-            } else if (type === 'confirm') {
-                modalIconContainer.classList.add('bg-amber-100', 'text-amber-600');
-                modalIcon.className = "fa-solid fa-circle-question text-2xl";
-                btnOk.classList.add('bg-amber-600', 'hover:bg-amber-700');
+                // Ikon Centang Sukses
+                iconHtml = `<div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>`;
+                btnOk.classList.remove('hidden');
+                btnOk.className =
+                    "w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition-colors font-medium";
+            } else if (type === 'error') {
+                // Ikon Silang Error
+                iconHtml = `<div class="w-12 h-12 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </div>`;
+                btnOk.classList.remove('hidden');
+                btnOk.className =
+                    "w-full px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl transition-colors font-medium";
             } else {
-                modalIconContainer.classList.add('bg-blue-100', 'text-blue-600');
-                modalIcon.className = "fa-solid fa-circle-info text-2xl";
-                btnOk.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                // Default Info
+                iconHtml = `<div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-info-circle"></i>
+                    </div>`;
+                btnOk.classList.remove('hidden');
             }
 
-            modalTitle.innerText = title;
-            modalMessage.innerText = message;
+            // Suntikkan ikon ke wadah ikon di HTML modal
+            if (modalIconContainer) {
+                modalIconContainer.innerHTML = iconHtml;
+            }
 
-            // Toggle Cancel Button
+            // Logika Tombol Cancel
             if (showCancel) {
                 btnCancel.classList.remove('hidden');
             } else {
                 btnCancel.classList.add('hidden');
             }
 
-            // Show Modal with smooth transition
+            // Set Handler Klik Tombol OK
+            btnOk.onclick = function() {
+                closeModal();
+                if (typeof onConfirm === 'function') {
+                    onConfirm();
+                }
+            };
+
+            // Munculkan Modal dengan Transisi Smooth
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             setTimeout(() => {
@@ -247,21 +275,6 @@
                 modalBox.classList.remove('scale-95');
                 modalBox.classList.add('scale-100');
             }, 10);
-
-            // Clean up event listeners to prevent duplication
-            const cloneOk = btnOk.cloneNode(true);
-            const cloneCancel = btnCancel.cloneNode(true);
-            btnOk.parentNode.replaceChild(cloneOk, btnOk);
-            btnCancel.parentNode.replaceChild(cloneCancel, btnCancel);
-
-            // Handle Confirm Action
-            cloneOk.addEventListener('click', () => {
-                closeModal();
-                if (onConfirm) onConfirm();
-            });
-
-            // Handle Cancel Action
-            cloneCancel.addEventListener('click', closeModal);
         }
 
         function closeModal() {
@@ -270,12 +283,13 @@
             modal.classList.remove('opacity-100');
             modalBox.classList.remove('scale-100');
             modalBox.classList.add('scale-95');
-            setTimeout(() => {
+
+            // Masukkan setTimeout ke dalam variabel modalTimer
+            modalTimer = setTimeout(() => {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
             }, 150);
         }
-        // ---------------------------
 
         function formatRupiah(number) {
             return new Intl.NumberFormat('id-ID', {
@@ -366,7 +380,6 @@
             renderCart();
         }
 
-
         function removeFromCart(id) {
             delete cart[id];
             renderCart();
@@ -453,26 +466,20 @@
             });
         }
 
-        function executeCheckout(cartArray) {
-            // Cegah eksekusi ganda jika tombol modal ditekan berkali-kali dengan cepat
+        function executeCheckout() {
             if (isProcessing) return;
+            isProcessing = true;
 
-            isProcessing = true; // Kunci sistem!
-
-            // Tampilkan modal loading sesaat sebelum fetch dimulai
+            // TAMPILKAN MODAL PROSES (SPINNER RUNNING)
             showModal({
-                title: 'Memproses Pembayaran...',
-                message: 'Mohon tunggu sebentar, sistem sedang mencatat transaksi Anda.',
-                type: 'info',
-                showCancel: false
+                title: 'Memproses Transaksi',
+                message: 'Mohon tunggu sebentar, data sedang disimpan...',
+                type: 'loading' // Ini akan memicu animasi spinner dan menyembunyikan tombol OK
             });
 
-            // Ubah teks tombol menjadi loading (opsional tapi disarankan)
-            const btnOk = document.getElementById('modal-btn-ok');
-            btnOk.disabled = true;
-            btnOk.innerHTML = '<i class="fa-solid fa-check"></i> Selesai';
+            const cartArray = Object.values(cart);
 
-            fetch('{{ route('pos.store') }}', {
+            fetch("{{ route('pos.store') }}", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -484,29 +491,32 @@
                 })
                 .then(res => res.json())
                 .then(data => {
-                    btnOk.disabled = false; // Kembalikan fungsi tombol
+                    isProcessing = false; // Buka kunci proses
+
                     if (data.success) {
+                        // TAMPILKAN MODAL SUKSES (CENTANG HIJAU)
                         showModal({
                             title: 'Pembayaran Berhasil',
-                            message: data.message,
-                            type: 'success',
+                            message: data.message || 'Transaksi berhasil diselesaikan!',
+                            type: 'success', // Memicu ikon centang hijau & tombol OK hijau
                             onConfirm: () => {
-                                window.location.reload();
+                                window.location.reload(); // Reload halaman setelah kasir klik OK
                             }
                         });
                     } else {
+                        // TAMPILKAN MODAL GAGAL (SILANG MERAH)
                         showModal({
-                            title: 'Gagal',
+                            title: 'Pembayaran Gagal',
                             message: 'Gagal: ' + data.message,
-                            type: 'error'
+                            type: 'error' // Memicu ikon silang merah
                         });
                     }
                 })
                 .catch(err => {
-                    btnOk.disabled = false;
+                    isProcessing = false;
                     showModal({
                         title: 'Error Sistem',
-                        message: 'Terjadi kesalahan sistem saat memproses data.',
+                        message: 'Terjadi kesalahan jaringan atau server saat memproses data.',
                         type: 'error'
                     });
                     console.error(err);

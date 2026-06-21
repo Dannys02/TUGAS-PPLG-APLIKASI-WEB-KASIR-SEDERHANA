@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
             $table->string('nama_menu');
-            $table->foreignId('kategori_id')->constrained('categories')->onDelete('cascade')->unique();
+            $table->foreignId('kategori_id')->constrained('categories')->unique();
 
             $table->unique(['nama_menu', 'kategori_id']);
 
@@ -22,6 +22,8 @@ return new class extends Migration
             $table->integer('stok');
             $table->text('deskripsi')->nullable();
             $table->timestamps();
+
+            $table->softDeletes();
         });
     }
 

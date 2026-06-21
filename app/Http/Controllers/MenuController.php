@@ -129,6 +129,6 @@ class MenuController extends Controller
         }
 
         $menu->delete();
-        return redirect()->route('menus.index')->with('success', 'Menu berhasil dihapus.');
+        return back()->with('success', 'Menu berhasil dihapus.');
     }
 }
