@@ -25,73 +25,95 @@
             @endif
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-slate-700">Nama Menu</label>
-                    <div class="relative flex items-center">
-                        <span class="absolute left-4 text-slate-400">
-                            <i class="fa-solid fa-utensils text-sm"></i>
-                        </span>
-                        <input type="text" name="nama_menu"
-                            class="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-800 text-sm focus:outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition-all"
-                            required placeholder="Contoh: Espresso Macchiato"
-                            value="{{ old('nama_menu', $editMenu->nama_menu ?? '') }}">
+                <div class="flex flex-col">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-slate-700">Nama Menu</label>
+                        <div class="relative flex items-center">
+                            <span class="absolute left-4 text-slate-400">
+                                <i class="fa-solid fa-utensils text-sm"></i>
+                            </span>
+                            <input type="text" name="nama_menu"
+                                class="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-800 text-sm focus:outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition-all"
+                                placeholder="Contoh: Espresso Macchiato"
+                                value="{{ old('nama_menu', $editMenu->nama_menu ?? '') }}">
+                        </div>
                     </div>
+
+                    @error('nama_menu')
+                        <p class="text-xs font-medium text-red-500 flex items-center gap-1.5 mt-2">
+                            <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
+                        </p>
+                    @enderror
                 </div>
 
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-slate-700">Kategori</label>
-                    <div class="relative flex items-center">
-                        <span class="absolute left-4 text-slate-400 z-10 pointer-events-none">
-                            <i class="fa-solid fa-tags text-sm"></i>
-                        </span>
-                        <select name="kategori_id"
-                            class="w-full pl-11 pr-10 py-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-800 text-sm focus:outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition-all appearance-none cursor-pointer"
-                            required>
-                            <option value="">-- Pilih Kategori --</option>
-                            @foreach ($categories as $c)
-                                <option value="{{ $c->id }}"
-                                    {{ old('kategori_id', $editMenu->kategori_id ?? '') == $c->id ? 'selected' : '' }}>
-                                    {{ $c->nama_kategori }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <span class="absolute right-4 text-slate-400 pointer-events-none">
-                            <i class="fa-solid fa-chevron-down text-xs"></i>
-                        </span>
+                <div class="flex flex-col">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-slate-700">Kategori</label>
+                        <div class="relative flex items-center">
+                            <span class="absolute left-4 text-slate-400 z-10 pointer-events-none">
+                                <i class="fa-solid fa-tags text-sm"></i>
+                            </span>
+                            <select name="kategori_id"
+                                class="w-full pl-11 pr-10 py-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-800 text-sm focus:outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition-all appearance-none cursor-pointer">
+                                <option value="">-- Pilih Kategori --</option>
+                                @foreach ($categories as $c)
+                                    <option value="{{ $c->id }}"
+                                        {{ old('kategori_id', $editMenu->kategori_id ?? '') == $c->id ? 'selected' : '' }}>
+                                        {{ $c->nama_kategori }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <span class="absolute right-4 text-slate-400 pointer-events-none">
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </span>
+                        </div>
                     </div>
+                    @error('kategori_id')
+                        <p class="text-xs font-medium text-red-500 flex items-center gap-1.5 mt-2">
+                            <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
+                        </p>
+                    @enderror
                 </div>
 
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-slate-700">Harga Jual</label>
-                    <div class="relative flex items-center">
-                        <span
-                            class="absolute left-4 text-slate-500 font-semibold text-xs bg-slate-200/60 px-2 py-1 rounded-md select-none">
-                            Rp
-                        </span>
-                        <input type="number" name="harga"
-                            class="w-full pl-14 pr-4 py-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-800 text-sm font-medium focus:outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition-all"
-                            required min="0" placeholder="15000" value="{{ old('harga', $editMenu->harga ?? '') }}">
+                <div class="flex flex-col">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-slate-700">Harga Jual</label>
+                        <div class="relative flex items-center">
+                            <span
+                                class="absolute left-4 text-slate-500 font-semibold text-xs bg-slate-200/60 px-2 py-1 rounded-md select-none">
+                                Rp
+                            </span>
+                            <input type="number" name="harga"
+                                class="w-full pl-14 pr-4 py-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-800 text-sm font-medium focus:outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition-all"
+                                min="0" placeholder="15000" value="{{ old('harga', $editMenu->harga ?? '') }}">
+                        </div>
                     </div>
+                    @error('harga')
+                        <p class="text-xs font-medium text-red-500 flex items-center gap-1.5 mt-2">
+                            <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
+                        </p>
+                    @enderror
                 </div>
 
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-slate-700">Jumlah Stok</label>
-                    <div class="relative flex items-center">
-                        <span class="absolute left-4 text-slate-400">
-                            <i class="fa-solid fa-box text-sm"></i>
-                        </span>
-                        <input type="number" name="stok"
-                            class="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-800 text-sm focus:outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition-all"
-                            required min="0" placeholder="50" value="{{ old('stok', $editMenu->stok ?? '') }}">
+                <div class="flex flex-col">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-slate-700">Jumlah Stok</label>
+                        <div class="relative flex items-center">
+                            <span class="absolute left-4 text-slate-400">
+                                <i class="fa-solid fa-box text-sm"></i>
+                            </span>
+                            <input type="number" name="stok"
+                                class="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-800 text-sm focus:outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition-all"
+                                min="0" placeholder="50" value="{{ old('stok', $editMenu->stok ?? '') }}">
+                        </div>
                     </div>
+                    @error('stok')
+                        <p class="text-xs font-medium text-red-500 flex items-center gap-1.5 mt-2">
+                            <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
+                        </p>
+                    @enderror
                 </div>
             </div>
-
-            @error('nama_menu')
-                <p class="text-xs font-medium text-red-500 flex items-center gap-1.5 mt-2">
-                    <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
-                </p>
-            @enderror
 
             <div class="flex flex-col sm:flex-row gap-3 mt-6 justify-start">
                 <button type="submit"
@@ -165,7 +187,7 @@
                             <td class="py-3.5 px-6">
                                 <span
                                     class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-100/60 shadow-sm">
-                                    {{ $m->category->nama_kategori ?? 'Umum' }}
+                                    {{ $m->category->nama_kategori ?? 'Tidak Ada' }}
                                 </span>
                             </td>
                             <td class="py-3.5 px-6 font-bold text-slate-800 tracking-tight">

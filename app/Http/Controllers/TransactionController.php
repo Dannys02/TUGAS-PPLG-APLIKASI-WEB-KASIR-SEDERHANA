@@ -34,7 +34,7 @@ class TransactionController extends Controller
         }
 
         // Eksekusi query ke database di paling akhir
-        $menus = $query->get(); 
+        $menus = $query->get();
         return view('pos.index', compact('menus'));
     }
 
@@ -130,18 +130,15 @@ class TransactionController extends Controller
         );
 
         // Query transaksi berdasarkan filter bulan-tahun DAN user
-        $transactions = Transaction::where(
-            'user_id',
-            auth()->user()->id
-        )
-            ->byMonthYear(
-                $month,
-                $year
-            )
-            ->orderBy(
-                'created_at',
-                'desc'
-            )
+        $transactions = Transaction::where('user_id', auth()->user()->id)
+            ->with(['details.menu' => function ($query) {
+                // Tampilkan menu meskipun sudah dihapus (soft delete)
+                $query->withTrashed()->with(['category' => function ($q) {
+                    // Tampilkan kategori meskipun sudah dihapus
+                    $q->withTrashed();
+                }]);
+            }])
+            ->orderBy('created_at', 'desc')
             ->paginate(30);
 
         // Hitung statistik berdasarkan filter yang dipilih
@@ -205,18 +202,24 @@ class TransactionController extends Controller
         );
 
         // Query transaksi berdasarkan filter bulan-tahun DAN user
-        $transactions = Transaction::where(
-            'user_id',
-            auth()->user()->id
-        )
-            ->byMonthYear(
-                $month,
-                $year
-            )
-            ->orderBy(
-                'created_at',
-                'desc'
-            )
+        // $transactions = Transaction::where('user_id', auth()->user()->id)
+        //     ->byMonthYear($month, $year)
+        //     ->with(['details.menu' => function ($query) {
+        //         $query->withTrashed()->with(['category' => function ($q) {
+        //             $q->withTrashed();
+        //         }]);
+        //     }])
+        //     ->orderBy('created_at', 'desc')
+        //     ->get();
+        $transactions = Transaction::where('user_id', auth()->user()->id)
+            ->with(['details.menu' => function ($query) {
+                // Tampilkan menu meskipun sudah dihapus (soft delete)
+                $query->withTrashed()->with(['category' => function ($q) {
+                    // Tampilkan kategori meskipun sudah dihapus
+                    $q->withTrashed();
+                }]);
+            }])
+            ->orderBy('created_at', 'desc')
             ->get();
 
         // Hitung statistik berdasarkan filter yang dipilih
@@ -285,7 +288,9 @@ class TransactionController extends Controller
                     $query->where('user_id', auth()->user()->id)
                         ->byMonthYear($month, $year);
                 }
-            )
+            )->with(['menu' => function ($query) {
+                $query->withTrashed();
+            }])
             ->groupBy('menu_id')
             ->orderByDesc('total_sold')
             ->first();

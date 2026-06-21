@@ -51,8 +51,7 @@
                         {{ $bestSeller ? $bestSeller->menu->nama_menu : 'Belum ada' }}
                     </h2>
                     <p class="text-slate-400 text-xs truncate mt-0.5">
-                        Kategori: {{ $bestSeller ? $bestSeller->menu->category->nama_kategori : '-' }}
-                    </p>
+                        Kategori: {{ $bestSeller?->menu?->category?->nama_kategori ?? '-' }} </p>
                 </div>
                 @if ($bestSeller)
                     <div
@@ -175,12 +174,11 @@
                                             class="flex flex-col lg:flex-row text-xs bg-slate-50 border border-slate-200/60 p-2.5 rounded-xl transition-all hover:bg-white hover:shadow-sm">
                                             <div class="pr-2">
                                                 <span
-                                                    class="font-bold text-slate-700 block">{{ $detail->menu->nama_menu ?? 'Menu Terhapus' }}</span>
+                                                    class="font-bold text-slate-700 block">{{ $detail->menu->nama_menu ?? '"Menu Terhapus"' }}</span>
                                                 <span
-                                                    class="text-[10px] text-slate-400 block mt-0.5">{{ $detail->menu->category->nama_kategori ?? 'Umum' }}</span>
+                                                    class="text-[10px] text-slate-400 block mt-0.5">{{ $detail->menu->category->nama_kategori ?? 'Kategori Terhapus' }}</span>
                                             </div>
-                                            <div
-                                                class="text-left shrink-0 lg:border-l border-slate-200/80 lg:pl-2">
+                                            <div class="text-left shrink-0 lg:border-l border-slate-200/80 lg:pl-2">
                                                 <span
                                                     class="font-bold text-slate-700 bg-slate-200/50 text-[10px] px-1.5 py-0.5 rounded-md">{{ $detail->jumlah }}x</span>
                                                 <span

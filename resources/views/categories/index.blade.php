@@ -37,7 +37,7 @@
                             </span>
                             <input type="text" name="nama_kategori"
                                 class="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-800 text-sm focus:outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition-all"
-                                required placeholder="Contoh: Makanan Utama, Minuman"
+                                placeholder="Contoh: Makanan Utama, Minuman"
                                 value="{{ old('nama_kategori', $editCategory->nama_kategori ?? '') }}">
                         </div>
                         @error('nama_kategori')

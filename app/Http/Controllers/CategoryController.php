@@ -31,8 +31,11 @@ class CategoryController extends Controller
                 'required',
                 'string',
                 'max:255',
+                // Rule::unique('categories')
+                //     ->where('user_id', auth()->user()->id)
                 Rule::unique('categories')
                     ->where('user_id', auth()->user()->id)
+                    ->whereNull('deleted_at')
             ]
         ], [
             // Kumpulan pesan validasi bahasa Indonesia untuk method store

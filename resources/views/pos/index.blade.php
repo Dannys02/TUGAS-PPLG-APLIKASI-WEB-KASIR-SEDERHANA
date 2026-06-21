@@ -49,12 +49,12 @@
                 @forelse ($menus as $m)
                     <div id="menu-card-{{ $m->id }}" data-stok="{{ $m->stok }}"
                         class="p-4 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-300 transition-all cursor-pointer group flex flex-col h-full justify-between"
-                        onclick="addToCart({{ $m->id }}, '{{ addslashes($m->nama_menu) }}', {{ $m->harga }}, this.getAttribute('data-stok'), '{{ addslashes($m->category->nama_kategori) }}')">
+                        onclick="addToCart({{ $m->id }}, '{{ addslashes($m->nama_menu) }}', {{ $m->harga }}, this.getAttribute('data-stok'), '{{ addslashes($m->category->nama_kategori ?? 'Tidak Ada') }}')">
                         <div>
                             <div class="flex flex-col gap-2">
                                 <span
                                     class="w-fit px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100/50 uppercase tracking-wide shrink-0">
-                                    {{ $m->category->nama_kategori ?? 'Umum' }}
+                                    {{ $m->category->nama_kategori ?? 'Tidak Ada' }}
                                 </span>
                                 <h3 class="font-bold text-slate-700 text-sm md:text-base leading-snug group-hover:text-blue-600 transition-colors"
                                     title="{{ $m->nama_menu }}">
@@ -457,7 +457,7 @@
             // Mengganti confirm() bawaan dengan modal konfirmasi kustom yang memiliki tombol Batal & Oke
             showModal({
                 title: 'Konfirmasi Pembayaran',
-                message: 'Apakah Anda yakin ingin memproses pembayaran untuk ' + cartArray.length + ' jenis item?',
+                message: 'Apakah Anda yakin ingin memproses pembayaran untuk ' + cartArray.length + ' menu?',
                 type: 'confirm',
                 showCancel: true,
                 onConfirm: () => {

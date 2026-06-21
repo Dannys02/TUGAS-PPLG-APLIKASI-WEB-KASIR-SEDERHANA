@@ -32,9 +32,14 @@ class MenuController extends Controller
                 'required',
                 'string',
                 'max:255',
+                // Rule::unique('menus')->where(function ($query) use ($request) {
+                //     return $query->where('kategori_id', $request->kategori_id)
+                //         ->where('user_id', auth()->user()->id);
+                // }),
                 Rule::unique('menus')->where(function ($query) use ($request) {
                     return $query->where('kategori_id', $request->kategori_id)
-                        ->where('user_id', auth()->user()->id);
+                        ->where('user_id', auth()->user()->id)
+                        ->whereNull('deleted_at'); // <--- INI KUNCINYA
                 }),
             ],
             'kategori_id' => [

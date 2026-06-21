@@ -19,7 +19,7 @@ class TransactionSeeder extends Seeder
     {
         $userId = 1;
         $menuId = 1;
-        $transactionCount = rand(800, 1000); // 800-1000 transaksi
+        $transactionCount = rand(200, 300); // jumlah transaksi
 
         for ($i = 0; $i < $transactionCount; $i++) {
             // Generate random tanggal April 2026
@@ -27,7 +27,9 @@ class TransactionSeeder extends Seeder
             $tanggal = Carbon::create(2026, 4, $randomDay);
 
             // Generate kode transaksi unik
-            $kode = 'TRX-' . $tanggal->format('YmdHis') . '-' . rand(100, 999);
+            // $kode = 'TRX-' . $tanggal->format('YmdHis') . '-' . rand(100, 999);
+            // Gunakan microtime agar setiap perulangan pasti menghasilkan angka yang berbeda
+            $kode = 'TRX-' . $tanggal->format('YmdHis') . '-' . uniqid();
 
             // Hitung total dari detail transaksi yang akan dibuat
             $total = 0;
