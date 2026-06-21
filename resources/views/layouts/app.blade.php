@@ -92,7 +92,7 @@
 
         <!-- Footer Sidebar -->
         <div class="sidebar-footer">
-            <form action="{{ route('logout') }}" method="POST">
+            <form id="formLogout" action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button id="logoutButton" type="submit" class="logout-button">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Keluar Aplikasi</span>
@@ -136,11 +136,9 @@
         const hamburgerToggle = document.getElementById('hamburgerToggle');
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
-
         const logoutButton = document.getElementById('logoutButton');
 
         logoutButton.disabled = true;
-
         setTimeout(() => {
             logoutButton.disabled = false;
         }, 5000);
@@ -149,9 +147,14 @@
             sidebar.classList.toggle('closed');
             sidebarOverlay.classList.toggle('active');
         }
-
         hamburgerToggle.addEventListener('click', toggleSidebar);
         sidebarOverlay.addEventListener('click', toggleSidebar);
+
+        // logout submit protection
+        document.getElementById('formLogout').addEventListener('submit', function() {
+            logoutButton.disabled = true;
+            logoutButton.innerText = 'Memproses...';
+        });
 
         // Close sidebar when link is clicked
         sidebar.addEventListener('click', () => {

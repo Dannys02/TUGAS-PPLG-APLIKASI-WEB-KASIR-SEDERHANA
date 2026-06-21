@@ -47,16 +47,16 @@
 
             <div class="grid grid-cols-2 xl:grid-cols-3 gap-4">
                 @forelse ($menus as $m)
-                    <div class="p-4 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-300 transition-all cursor-pointer group flex flex-col h-full justify-between"
-                        onclick="addToCart({{ $m->id }}, '{{ addslashes($m->nama_menu) }}', {{ $m->harga }}, {{ $m->stok }}, '{{ addslashes($m->category->nama_kategori) }}')">
-
+                    <div id="menu-card-{{ $m->id }}" data-stok="{{ $m->stok }}"
+                        class="p-4 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-300 transition-all cursor-pointer group flex flex-col h-full justify-between"
+                        onclick="addToCart({{ $m->id }}, '{{ addslashes($m->nama_menu) }}', {{ $m->harga }}, this.getAttribute('data-stok'), '{{ addslashes($m->category->nama_kategori) }}')">
                         <div>
                             <div class="flex flex-col gap-2">
                                 <span
                                     class="w-fit px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100/50 uppercase tracking-wide shrink-0">
                                     {{ $m->category->nama_kategori ?? 'Umum' }}
                                 </span>
-                                <h3 class="font-bold text-slate-700 text-sm md:text-base leading-snug group-hover:text-blue-600 transition-colors "
+                                <h3 class="font-bold text-slate-700 text-sm md:text-base leading-snug group-hover:text-blue-600 transition-colors"
                                     title="{{ $m->nama_menu }}">
                                     {{ $m->nama_menu }}
                                 </h3>
@@ -69,7 +69,7 @@
                         </div>
 
                         <div class="flex items-center justify-between pt-3 border-t border-slate-100 mt-auto">
-                            <div class="text-xs font-bold flex items-center gap-1">
+                            <div id="menu-stok-{{ $m->id }}" class="text-xs font-bold flex items-center gap-1">
                                 @if ($m->stok > 10)
                                     <span class="text-green-600 flex items-center gap-1"><span
                                             class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Stok:
@@ -83,7 +83,8 @@
                                             class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Habis</span>
                                 @endif
                             </div>
-                            <button
+
+                            <button id="btn-checkout"
                                 class="w-7 h-7 rounded-lg bg-blue-50 border border-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 shadow-sm transition-all flex items-center justify-center">
                                 <i class="fa-solid fa-plus text-xs"></i>
                             </button>
@@ -187,6 +188,7 @@
     <script>
         let cart = {};
         let blockCheckout = false;
+        let isProcessing = false;
 
         // --- ENGINE MODAL CUSTOM ---
         function showModal({
@@ -422,6 +424,9 @@
         }
 
         function checkout() {
+            // cegah klik tombol saat proses
+            if (isProcessing) return;
+
             const cartArray = Object.values(cart);
             if (cartArray.length === 0) {
                 showModal({
@@ -449,6 +454,24 @@
         }
 
         function executeCheckout(cartArray) {
+            // Cegah eksekusi ganda jika tombol modal ditekan berkali-kali dengan cepat
+            if (isProcessing) return;
+
+            isProcessing = true; // Kunci sistem!
+
+            // Tampilkan modal loading sesaat sebelum fetch dimulai
+            showModal({
+                title: 'Memproses Pembayaran...',
+                message: 'Mohon tunggu sebentar, sistem sedang mencatat transaksi Anda.',
+                type: 'info',
+                showCancel: false
+            });
+
+            // Ubah teks tombol menjadi loading (opsional tapi disarankan)
+            const btnOk = document.getElementById('modal-btn-ok');
+            btnOk.disabled = true;
+            btnOk.innerHTML = '<i class="fa-solid fa-check"></i> Selesai';
+
             fetch('{{ route('pos.store') }}', {
                     method: 'POST',
                     headers: {
@@ -461,6 +484,7 @@
                 })
                 .then(res => res.json())
                 .then(data => {
+                    btnOk.disabled = false; // Kembalikan fungsi tombol
                     if (data.success) {
                         showModal({
                             title: 'Pembayaran Berhasil',
@@ -479,9 +503,10 @@
                     }
                 })
                 .catch(err => {
+                    btnOk.disabled = false;
                     showModal({
                         title: 'Error Sistem',
-                        message: 'Terjadi kesalahan sistem.',
+                        message: 'Terjadi kesalahan sistem saat memproses data.',
                         type: 'error'
                     });
                     console.error(err);

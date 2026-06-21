@@ -169,7 +169,7 @@
                                     class="text-xs font-normal text-slate-400 mr-0.5">Rp</span>{{ number_format($t->total, 0, ',', '.') }}
                             </td>
                             <td class="py-4 px-6">
-                                <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 max-w-2xl">
+                                <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 max-w-2xl">
                                     @foreach ($t->details as $detail)
                                         <div
                                             class="flex flex-col lg:flex-row text-xs bg-slate-50 border border-slate-200/60 p-2.5 rounded-xl transition-all hover:bg-white hover:shadow-sm">
