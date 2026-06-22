@@ -31,7 +31,7 @@
                 </div>
             @endif
             <div class="brand-details">
-                <span class="brand-text">{{ $globalUser->name ?? 'Kasir Kafe' }}</span>
+                <span class="brand-text">{{ $globalUser->name ?? 'Kasir' }}</span>
                 <span class="brand-badge"><i class="fa-solid fa-circle text-xs text-emerald-400 mr-1 animate-pulse"></i>
                     Online</span>
             </div>

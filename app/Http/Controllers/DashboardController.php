@@ -18,24 +18,24 @@ class DashboardController extends Controller
         $currentMonth = Carbon::now()->month;
         $currentYear = Carbon::now()->year;
 
-        // 1. Omzet Hari Ini
+        // Omzet Hari Ini
         $omzetHariIni = Transaction::where('user_id', $userId)
             ->whereDate('created_at', $today)
-            ->sum('total_harga'); // Sesuaikan 'total_harga' dengan nama kolom total di tabel transaksi Anda
+            ->sum('total'); // Sesuaikan 'total' dengan nama kolom total di tabel transaksi Anda
 
-        // 2. Omzet Bulan Ini
+        // Omzet Bulan Ini
         $omzetBulanIni = Transaction::where('user_id', $userId)
             ->whereMonth('created_at', $currentMonth)
             ->whereYear('created_at', $currentYear)
-            ->sum('total_harga');
+            ->sum('total');
 
-        // 3. Jumlah Transaksi Bulan Ini (Atau sesuaikan jika ingin jumlah transaksi hari ini)
+        // umlah Transaksi Bulan Ini (Atau sesuaikan jika ingin jumlah transaksi hari ini)
         $jumlahTransaksi = Transaction::where('user_id', $userId)
             ->whereMonth('created_at', $currentMonth)
             ->whereYear('created_at', $currentYear)
             ->count();
 
-        // 4. Menu Terlaris (Diambil dari detail transaksi bulan ini)
+        // Menu Terlaris (Diambil dari detail transaksi bulan ini)
         // Query ini mengelompokkan detail transaksi berdasarkan menu_id, menjumlahkan qty ('jumlah'), 
         // lalu mengambil 1 menu dengan jumlah tertinggi.
         $menuTerlaris = Menu::where('menus.user_id', $userId)
@@ -48,14 +48,13 @@ class DashboardController extends Controller
             ->orderByDesc('total_sold')
             ->first();
 
-        // 5. Stok Hampir Habis (Misal batas ambang stok tipis adalah di bawah atau sama dengan 5)
+        // Stok Hampir Habis (Misal batas ambang stok tipis adalah di bawah atau sama dengan 5)
         $stokHampirHabis = Menu::where('user_id', $userId)
             ->with('category') // Mengambil relasi kategori seperti yang ada di pos.index Anda
             ->where('stok', '<=', 5) // Mengambil stok yang bernilai 0 sampai 5
             ->orderBy('stok', 'asc') // Menampilkan stok yang paling kritis / kosong di atas
             ->get();
 
-        // Kirim semua variabel ke view dashboard
         return view('dashboard', compact(
             'omzetHariIni',
             'omzetBulanIni',
