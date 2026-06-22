@@ -5,11 +5,14 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', function () {
         return redirect()->route('pos.index');
     });
+    
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('user.dashboard');
 
     Route::resource(
         'categories',

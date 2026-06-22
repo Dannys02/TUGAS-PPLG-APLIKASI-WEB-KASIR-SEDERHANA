@@ -202,7 +202,7 @@
 /* Footer Section & Logout */
 .sidebar-footer {
     margin-top: auto;
-    padding-bottom: 2rem;
+    padding-bottom: 8rem !important;
     border-top: 1px solid var(--sb-border);
 }
 
@@ -704,7 +704,7 @@ input[type="number"] {
     }
 
     .sidebar-footer {
-      padding-bottom: 4rem;
+      padding-bottom: 4rem !important;
     }
 
     /* Status Tertutup di Mobile */
@@ -765,10 +765,6 @@ input[type="number"] {
 
     .qty-input {
         width: 100%;
-    }
-
-    .sidebar-footer {
-      padding-bottom: 2rem;
     }
 }
 
@@ -889,10 +885,6 @@ input[type="number"] {
 
     #filterForm label {
         font-size: 0.85rem;
-    }
-
-    .sidebar-footer {
-      padding-bottom: 0.5rem;
     }
 }
 

@@ -44,6 +44,11 @@
                 <span class="menu-group-title">Menu Utama</span>
                 <ul class="nav-links">
                     <li>
+                        <a href="{{ route('user.dashboard') }}" class="{{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
+                            <i class="fa-solid fa-gauge"></i> <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('pos.index') }}" class="{{ request()->routeIs('pos.*') ? 'active' : '' }}">
                             <i class="fa-solid fa-cash-register"></i> <span>Kasir (POS)</span>
                         </a>
