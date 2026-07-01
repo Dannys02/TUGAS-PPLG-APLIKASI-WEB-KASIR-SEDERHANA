@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,12 +19,16 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Dannys Martha Favrillia',
+            'email' => 'danisprogaming000@gmail.com',
+            'password' => Hash::make('password'),
         ]);
 
-        // Generate dummy transaction data for testing
+        // Seed data secara berurutan:
+        // 1. Kategori → 2. Menu (butuh kategori) → 3. Transaksi (butuh menu)
         $this->call([
+            CategorySeeder::class,
+            MenuSeeder::class,
             TransactionSeeder::class,
         ]);
     }
