@@ -1,75 +1,150 @@
-# Kasir Cafe - Sistem Point of Sale (POS) untuk Kafe
+# QuickPOS - Smart Cloud Point of Sale for MSMEs & F&B
 
-## 📋 Presentasi Aplikasi
+> English (Primary) | [Bahasa Indonesia](README.id.md)
 
-**Kasir Cafe** adalah aplikasi web berbasis Laravel yang dirancang khusus sebagai sistem Point of Sale (POS) modern untuk mengelola operasional kafe dengan efisien. Aplikasi ini menyediakan solusi terintegrasi untuk mengelola menu, kategori produk, melakukan transaksi penjualan, dan mencatat riwayat transaksi secara real-time. Dengan antarmuka yang user-friendly dan responsif, Kasir Cafe memudahkan kasir dan pemilik kafe dalam melakukan penjualan, manajemen inventaris menu, serta analisis penjualan harian. Aplikasi ini dibangun dengan teknologi Laravel framework terkini yang memastikan keamanan data, performa optimal, dan skalabilitas untuk pertumbuhan bisnis kafe ke depannya.
+**QuickPOS** is a modern, lightweight, multi-tenant Point of Sale (POS) and inventory web application built with Laravel 11. Specifically engineered for micro, small, and medium enterprises (MSMEs / UMKM) such as coffee shops, food stalls, retail stores, and local cafes, QuickPOS streamlines cash register transactions, real-time stock management, and financial reporting.
 
-## 🎯 Fungsi dan Fitur Utama
+---
 
-### 1. **Manajemen Kategori Menu**
-Fitur ini memungkinkan pemilik atau admin kafe untuk mengelola kategori-kategori produk menu dengan mudah. Pengguna dapat membuat kategori baru seperti "Minuman Panas", "Minuman Dingin", "Makanan Berat", "Makanan Ringan", dan lainnya. Dengan fitur ini, menu dapat diorganisir secara terstruktur sehingga memudahkan kasir saat memilih produk pada saat transaksi. Admin dapat melihat daftar semua kategori, menambah kategori baru, mengedit informasi kategori, dan menghapus kategori yang sudah tidak diperlukan. Sistem kategori ini membantu dalam pengorganisasian produk dan membuat sistem penjualan lebih efisien.
+## Problem Statement & Solution
 
-### 2. **Manajemen Menu dan Produk**
-Modul manajemen menu memungkinkan admin untuk mengelola seluruh daftar produk yang dijual di kafe. Setiap menu dapat dikaitkan dengan kategori tertentu dan memiliki informasi lengkap seperti nama produk, deskripsi, harga, stok ketersediaan, dan gambar produk. Admin dapat dengan mudah menambahkan menu baru ke sistem, mengedit detail produk seperti harga dan stok, serta menghapus menu yang tidak lagi tersedia. Fitur pencarian dan filter berdasarkan kategori juga tersedia untuk memudahkan admin dalam mengelola ratusan item menu sekaligus. Sistem ini memastikan data menu selalu update dan akurat untuk keperluan transaksi.
+### The Problems MSMEs Face
+1. **Manual Logbooks & Calculation Errors:** Recording sales and calculating totals on paper often leads to miscalculations, lost records, and cash discrepancies.
+2. **Stock Discrepancies:** Selling items that are actually out of stock due to the lack of real-time inventory updates.
+3. **Multi-Store Data Mixing:** Independent business owners or tenants need isolated accounts without risking data leaks across different stores.
+4. **Complicated Setup:** Most existing enterprise POS software is overly complex, costly, and requires steep training curves.
 
-### 3. **Sistem Point of Sale (POS)**
-Fitur utama aplikasi ini adalah sistem POS yang memungkinkan kasir untuk melakukan penjualan dengan cepat dan akurat. Interface POS dirancang untuk workflow yang optimal, di mana kasir dapat memilih produk dari kategori, menambahkan ke keranjang, mengatur jumlah item, dan menghitung total harga secara otomatis. Sistem ini mendukung penjualan multiple items dalam satu transaksi, perhitungan pajak, diskon, dan kembalian. Setiap transaksi dicatat secara otomatis dengan timestamp, informasi detail produk, jumlah, harga, dan total pembayaran. Antarmuka POS dilengkapi dengan fitur pencarian cepat untuk menemukan produk dengan mudah di tengah volume menu yang besar.
+### The Solution Provided by QuickPOS
+* **Instant Cashier Workflow:** An intuitive, single-screen interactive POS terminal designed for speed during peak hours.
+* **Concurrency-Safe Inventory Deduction:** Automated stock decrement protected with database transactions and pessimistic locking (`lockForUpdate`) to eliminate overselling and race conditions.
+* **Isolated Multi-Tenancy:** Each registered account manages its own separate product catalog, categories, financial statistics, and sales history.
+* **Monthly Financial Reporting & PDF Export:** One-click automated revenue calculation, best-seller tracking, and professional PDF summary reports for monthly financial reconciliations.
 
-### 4. **Riwayat Transaksi dan Laporan**
-Fitur riwayat transaksi memberikan pelaporan lengkap terhadap semua penjualan yang telah dilakukan. Admin dan kasir dapat melihat detail transaksi meliputi waktu penjualan, daftar produk yang terjual, jumlah item, harga satuan, jumlah pembayaran, dan detail kembalian. Laporan ini dapat disaring berdasarkan tanggal, kategori produk, atau periode tertentu untuk analisis penjualan lebih lanjut. Dengan data historis yang lengkap, pemilik kafe dapat membuat keputusan bisnis berdasarkan tren penjualan, produk bestseller, dan pendapatan harian atau bulanan.
+---
 
-### 5. **Manajemen User dan Autentikasi**
-Sistem autentikasi keamanan terintegrasi memastikan hanya pengguna yang sah yang dapat mengakses aplikasi. Aplikasi mendukung berbagai level pengguna seperti Admin (akses penuh), Kasir (akses untuk POS dan riwayat), dan Manajer (akses untuk laporan). Setiap pengguna memiliki kredensial (username/email dan password) yang aman dan terenkripsi. Sistem ini juga mencatat aktivitas pengguna untuk audit trail dan keamanan data nasabah.
+## Key Features
 
-## 🛠️ Stack Teknologi
+* **Interactive POS Interface:**
+  * Real-time search by menu name or category.
+  * Live responsive shopping cart with automatic subtotal and total calculations.
+  * Instant out-of-stock validation and visual warnings.
+  * Interactive transaction confirmation and receipt modals.
+* **Menu & Category Management:**
+  * Full CRUD (Create, Read, Update, Delete) operations.
+  * Scoped validation ensuring category and menu uniqueness per store.
+  * Integrated Soft Delete: deleting a product keeps historical transactions and reports intact.
+* **Business Insights Dashboard:**
+  * Today's revenue vs. current month's revenue overview.
+  * Total transactions processed.
+  * Best-selling menu item indicator.
+  * Low-stock warning alert (items with stock &le; 5 units).
+* **Sales History & Reporting:**
+  * Filter transactions by month and year with preserved pagination state.
+  * Detailed invoice breakdown showing quantities, items, and unit prices.
+  * One-click PDF download for monthly financial reports via Barryvdh DomPDF.
+* **Account & Security Settings:**
+  * Multi-user authentication (Register, Login, Password Reset with email token).
+  * Profile management (Store Name, User Email, and Password update).
+  * Server-side price enforcement to prevent client-side manipulation.
 
-- **Backend**: Laravel 11 - PHP Framework modern
-- **Database**: MySQL/MariaDB 
-- **Frontend**: Blade Template Engine dengan HTML, CSS, dan JavaScript
-- **Build Tool**: Vite untuk asset bundling
-- **ORM**: Eloquent untuk interaksi database
+---
 
-## 📁 Struktur Folder Proyek
+## Tech Stack
 
+* **Backend:** PHP 8.2+, Laravel 11
+* **Database:** MySQL / MariaDB
+* **Frontend:** Blade Templating, Tailwind CSS, JavaScript (Fetch API)
+* **Icons:** FontAwesome 6
+* **PDF Engine:** `barryvdh/laravel-dompdf`
+
+---
+
+## Installation & Setup
+
+### Prerequisites
+* PHP >= 8.2 with PDO, OpenSSL, and Mbstring extensions enabled
+* Composer
+* Node.js & NPM
+* MySQL or MariaDB database server
+
+### Step-by-Step Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd TUGAS-PPLG-APLIKASI-WEB-KASIR-SEDERHANA
+   ```
+
+2. **Install PHP and Node dependencies:**
+   ```bash
+   composer install
+   npm install
+   ```
+
+3. **Configure the Environment:**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+   Open `.env` and set your database credentials:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=db_kasir
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+
+4. **Run Migrations & Seeders:**
+   ```bash
+   php artisan migrate --seed
+   ```
+
+5. **Build Assets & Start Local Server:**
+   ```bash
+   # Terminal 1: Compile frontend assets
+   npm run build
+
+   # Terminal 2: Run Laravel development server
+   php artisan serve
+   ```
+   Access the application at `http://127.0.0.1:8000`.
+
+---
+
+## How to Use QuickPOS
+
+```mermaid
+flowchart LR
+    A["1. Register / Login"] --> B["2. Setup Categories & Menus"]
+    B --> C["3. Open POS & Add to Cart"]
+    C --> D["4. Confirm Checkout"]
+    D --> E["5. Monitor Dashboard & Export PDF"]
 ```
-Kasir Cafe/
-├── app/
-│   ├── Http/Controllers/       # Controller untuk handling logic aplikasi
-│   ├── Models/                 # Model data (Category, Menu, Transaction, dll)
-│   └── Providers/              # Service providers
-├── database/
-│   ├── migrations/             # Migrasi database untuk struktur tabel
-│   ├── factories/              # Factory untuk testing
-│   └── seeders/                # Database seeder
-├── resources/views/            # Template Blade untuk UI
-│   ├── categories/             # View untuk manajemen kategori
-│   ├── menus/                  # View untuk manajemen menu
-│   ├── pos/                    # View untuk sistem POS
-│   ├── transactions/           # View untuk riwayat transaksi
-│   └── layouts/                # Layout template
-├── routes/                     # Route definition (web.php)
-├── config/                     # Konfigurasi aplikasi
-└── public/                     # Asset publik (CSS, gambar, dll)
-```
 
-## 🚀 Keunggulan Kasir Cafe
+### 1. Account Setup
+* Navigate to `/login` or create a new store account at `/create/auth/admin/user/register`.
+* Update your store identity via the **Settings** menu.
 
-1. **Cepat dan Responsif** - Interface POS yang dioptimalkan untuk kecepatan transaksi maksimal
-2. **User-Friendly** - Desain intuitif sehingga mudah digunakan oleh kasir dengan minimal training
-3. **Akurat** - Sistem perhitungan otomatis mengurangi kesalahan manual
-4. **Terukur** - Laporan detail membantu analisis bisnis dan pengambilan keputusan
-5. **Terintegrasi** - Semua fungsi terintegrasi dalam satu sistem yang kohesif
-6. **Aman** - Autentikasi dan enkripsi data untuk melindungi informasi bisnis
-7. **Scalable** - Dibangun dengan Laravel yang robust untuk pertumbuhan bisnis
+### 2. Prepare Categories & Products
+* Go to **Categories** and add categories (e.g., Coffee, Food, Dessert).
+* Go to **Menus** to add items specifying the name, category, selling price, and initial stock level.
 
-## 📝 Catatan Implementasi
+### 3. Serving Customers (POS Terminal)
+* Go to **POS**.
+* Click on menu cards or search products using the search bar to add them to the cart.
+* Adjust quantities using the `+` or `-` buttons. The cart dynamically calculates the total.
+* Click **Checkout**, verify the item list in the confirmation modal, and finalize the transaction.
+* Stock is automatically deducted on the server.
 
-Aplikasi Kasir Cafe telah dioptimalkan untuk memenuhi kebutuhan operasional kafe modern, dari kafe kecil hingga medium-sized dengan multiple outlets di masa depan. Sistem ini dapat dengan mudah dikembangkan untuk fitur tambahan seperti integrasi payment gateway, multiple outlet management, inventory tracking real-time, dan business analytics dashboard yang lebih canggih.
+### 4. Review Reports & Insights
+* Visit **Dashboard** for a high-level view of daily sales, low-stock warnings, and top-selling products.
+* Go to **Sales History** to view all past invoices.
+* Use the month and year filter to inspect historical sales.
+* Click **Export PDF** to download an audit-ready monthly sales statement.
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
 ## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-source and available under the [MIT License](LICENSE).
