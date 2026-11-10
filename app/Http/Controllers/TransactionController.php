@@ -71,23 +71,25 @@ class TransactionController extends Controller
                 $detailTransactions = [];
 
                 foreach ($request->cart as $item) {
-                    $subtotal = $item['qty'] * $item['price'];
+                    $menu = $menus[$item['id']];
+                    if ($menu->stok < $item['qty']) {
+                        throw new \Exception('Stok menu ' . $menu->nama_menu . ' tidak cukup.');
+                    }
+
+                    // Gunakan harga asli dari database untuk keamanan integritas transaksi
+                    $actualPrice = $menu->harga;
+                    $subtotal = $item['qty'] * $actualPrice;
                     $total += $subtotal;
 
                     $detailTransactions[] = [
                         'transaction_id' => $transaction->id,
                         'menu_id' => $item['id'],
                         'jumlah' => $item['qty'],
-                        'harga' => $item['price'],
+                        'harga' => $actualPrice,
                         'subtotal' => $subtotal,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ];
-
-                    $menu = $menus[$item['id']];
-                    if ($menu->stok < $item['qty']) {
-                        throw new \Exception('Stok menu ' . $menu->nama_menu . ' tidak cukup.');
-                    }
 
                     // Kurangi stok menu
                     $menu->stok -= $item['qty'];
@@ -129,8 +131,9 @@ class TransactionController extends Controller
             min(date('Y') + 1, (int)$year)
         );
 
-        // Query transaksi berdasarkan filter bulan-tahun DAN user
+        // Ambil transaksi berdasarkan filter bulan-tahun DAN user
         $transactions = Transaction::where('user_id', auth()->user()->id)
+            ->byMonthYear($month, $year)
             ->with(['details.menu' => function ($query) {
                 // Tampilkan menu meskipun sudah dihapus (soft delete)
                 $query->withTrashed()->with(['category' => function ($q) {
@@ -139,7 +142,8 @@ class TransactionController extends Controller
                 }]);
             }])
             ->orderBy('created_at', 'desc')
-            ->paginate(30);
+            ->paginate(30)
+            ->withQueryString();
 
         // Hitung statistik berdasarkan filter yang dipilih
         $totalOmzet = $this->calculateTotalOmzet(
@@ -202,16 +206,8 @@ class TransactionController extends Controller
         );
 
         // Query transaksi berdasarkan filter bulan-tahun DAN user
-        // $transactions = Transaction::where('user_id', auth()->user()->id)
-        //     ->byMonthYear($month, $year)
-        //     ->with(['details.menu' => function ($query) {
-        //         $query->withTrashed()->with(['category' => function ($q) {
-        //             $q->withTrashed();
-        //         }]);
-        //     }])
-        //     ->orderBy('created_at', 'desc')
-        //     ->get();
         $transactions = Transaction::where('user_id', auth()->user()->id)
+            ->byMonthYear($month, $year)
             ->with(['details.menu' => function ($query) {
                 // Tampilkan menu meskipun sudah dihapus (soft delete)
                 $query->withTrashed()->with(['category' => function ($q) {

@@ -61,12 +61,21 @@ class CategoryController extends Controller
         }
 
         $request->validate([
-            'nama_kategori' => 'required|string|max:255'
+            'nama_kategori' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('categories')
+                    ->where('user_id', auth()->user()->id)
+                    ->whereNull('deleted_at')
+                    ->ignore($category->id)
+            ]
         ], [
             // Kumpulan pesan validasi bahasa Indonesia untuk method update
             'nama_kategori.required' => 'Nama kategori wajib diisi.',
             'nama_kategori.string'   => 'Nama kategori harus berupa teks.',
-            'nama_kategori.max'      => 'Nama kategori tidak boleh lebih dari 255 karakter.'
+            'nama_kategori.max'      => 'Nama kategori tidak boleh lebih dari 255 karakter.',
+            'nama_kategori.unique'   => 'Nama kategori ini sudah Anda buat sebelumnya.'
         ]);
 
         $category->update($request->all());
